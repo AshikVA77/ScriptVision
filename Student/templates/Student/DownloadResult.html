@@ -1,0 +1,281 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Download Result</title>
+</head>
+
+<style>
+    /* =========================================
+   Download Result
+========================================= */
+
+    .sv-download-result-container {
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 55px 20px 80px;
+        color: var(--tx);
+    }
+
+
+    /* =========================================
+   Header
+========================================= */
+
+    .sv-download-result-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .sv-download-result-header h1 {
+        margin: 0 0 10px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--tx);
+    }
+
+    .sv-download-result-header p {
+        margin: 0;
+        color: var(--tx2);
+        font-size: 0.95rem;
+    }
+
+
+    /* =========================================
+   Main Card
+========================================= */
+
+    .sv-download-result-card {
+        padding: 30px;
+        background: rgba(17, 17, 26, 0.75);
+        border: 1px solid var(--bd);
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+
+    /* =========================================
+   Student Information
+========================================= */
+
+    .sv-student-result-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .sv-student-result-info div {
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--bd);
+        border-radius: 12px;
+    }
+
+    .sv-student-result-info span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+    .sv-student-result-info strong {
+        color: var(--tx);
+        font-size: 0.95rem;
+    }
+
+
+    /* =========================================
+   Select Field
+========================================= */
+
+    .sv-download-result-field {
+        margin-bottom: 25px;
+    }
+
+    .sv-download-result-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--tx);
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .sv-download-result-field select {
+        width: 100%;
+        padding: 13px 14px;
+        background: var(--bg2);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        color: var(--tx);
+        font-size: 0.95rem;
+        outline: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .sv-download-result-field select:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+    .sv-download-result-field select option {
+        background: var(--bg2);
+        color: var(--tx);
+    }
+
+
+    /* =========================================
+   Download Button
+========================================= */
+
+    .sv-download-result-button {
+        width: 100%;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 10px;
+        background: var(--pur);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-download-result-button:hover {
+        background: var(--pur2);
+        transform: translateY(-1px);
+    }
+
+
+    /* =========================================
+   Back Button
+========================================= */
+
+    .sv-download-result-back {
+        display: block;
+        width: fit-content;
+        margin: 25px auto 0;
+        padding: 10px 20px;
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        color: var(--tx2);
+        text-decoration: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-download-result-back:hover {
+        border-color: var(--pur);
+        color: var(--pur2);
+        background: rgba(139, 92, 246, 0.06);
+    }
+
+
+    /* =========================================
+   Responsive
+========================================= */
+
+    @media (max-width: 600px) {
+
+        .sv-download-result-container {
+            padding: 35px 15px 60px;
+        }
+
+        .sv-download-result-header h1 {
+            font-size: 1.7rem;
+        }
+
+        .sv-download-result-card {
+            padding: 22px;
+        }
+
+        .sv-student-result-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<body>
+    <div class="sv-download-result-container">
+
+        <div class="sv-download-result-header">
+            <h1>Download Result</h1>
+
+            <p>
+                Select an exam to download your result.
+            </p>
+        </div>
+
+
+        <div class="sv-download-result-card">
+
+            <div class="sv-student-result-info">
+
+                <div>
+                    <span>Student Name</span>
+                    <strong>{{ student.student_name }}</strong>
+                </div>
+
+                <div>
+                    <span>Student ID</span>
+                    <strong>{{ student.student_id }}</strong>
+                </div>
+
+            </div>
+
+
+            <form method="GET">
+
+                <div class="sv-download-result-field">
+
+                    <label for="exam_type">
+                        Select Exam Series
+                    </label>
+
+                    <select name="exam_type" id="exam_type" required>
+
+                        <option value="">
+                            -- Select Exam Series --
+                        </option>
+
+                        {% for exam_type in exam_series %}
+
+                        <option value="{{ exam_type }}">
+                            {{ exam_type }}
+                        </option>
+
+                        {% empty %}
+
+                        <option value="">
+                            No results available
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <button type="submit" class="sv-download-result-button">
+                    Download Result
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <a href="{% url 'Student:ViewResult' %}" class="sv-download-result-back">
+            Back to Results
+        </a>
+
+    </div>
+</body>
+
+</html>
+{% endblock %}

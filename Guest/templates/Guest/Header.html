@@ -1,0 +1,230 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <title>Script Vision - AI-Based Handwritten Answer Evaluation</title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+   <!-- Favicon -->
+   <link rel="icon" type="image/png" href="{% static 'Main/img/scriptvisionlogo.png' %}">
+
+   <!-- Bootstrap 5.3 -->
+   <link href="{% static 'Main/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+   <!-- AOS Animate on Scroll -->
+   <link href="{% static 'Main/css/aos.css' %}" rel="stylesheet" />
+
+   <!-- Swiper -->
+   <link href="{% static 'Main/css/swiper-bundle.min.css' %}" rel="stylesheet" />
+
+   <!-- All min CSS -->
+   <link rel="stylesheet" href="{% static 'Main/css/all.min.css' %}" />
+
+   <!-- Magnific CSS -->
+   <link rel="stylesheet" href="{% static 'Main/css/magnific-popup.css' %}" />
+
+   <!-- Style CSS -->
+   <link rel="stylesheet" href="{% static 'Main/css/style.css' %}" />
+</head>
+
+<body>
+
+   <!-- ======================== HEADER ======================== -->
+
+   <!-- NAVBAR -->
+   <nav id="nbar">
+      <div class="container">
+         <div class="d-flex align-items-center justify-content-between w-100">
+
+            <!-- LOGO -->
+            <a href="{% url 'Guest:index' %}" class="d-flex align-items-center gap-2"
+               style="font-size:1.2rem;font-weight:700;color:var(--tx);text-decoration:none;">
+
+               <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision Logo"
+                  style="width:38px;height:38px;border-radius:10px;object-fit:cover;">
+
+               <span>Script Vision</span>
+            </a>
+
+            <!-- NAVIGATION LINKS -->
+            <div class="d-none d-lg-flex align-items-center gap-1 mx-auto">
+
+               <a href="{% url 'Guest:index' %}" class="nav-link">Features</a>
+
+               <a href="{% url 'Guest:FAQ' %}" class="nav-link">
+                  FAQ
+               </a>
+
+               <a href="{% url 'Guest:Contact' %}" class="nav-link">
+                  Contact
+               </a>
+
+               <a href="{% url 'Guest:About' %}" class="nav-link">
+                  About
+               </a>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="d-flex align-items-center gap-2">
+
+               <!-- Theme Toggle -->
+               <button class="boc d-flex align-items-center justify-content-center" id="thbtn"
+                  style="width:38px;height:38px;padding:0;border-radius:12px" aria-label="Toggle theme">
+
+                  <i class="fa-solid fa-sun" id="suni" style="display:none"></i>
+
+                  <i class="fa-solid fa-moon" id="mooni"></i>
+
+               </button>
+
+               <!-- Login -->
+               <a href="{% url 'Guest:Login' %}" class="boc px-3 py-2 d-none d-sm-flex align-items-center gap-1">
+
+                  <i class="fa-regular fa-user fa-sm"></i>
+                  Log in
+
+               </a>
+
+               <!-- Get Started -->
+               <a href="{% url 'Guest:Register' %}"
+                  class="bgrd btn px-3 py-2 d-none d-sm-flex align-items-center gap-1">
+
+                  Get Started
+                  <i class="fa-solid fa-arrow-right fa-sm"></i>
+
+               </a>
+
+               <!-- Mobile Menu -->
+               <button class="boc d-lg-none px-2 py-2" id="mbtog" style="border-radius:10px">
+
+                  <i class="fa-solid fa-bars" id="barIcon"></i>
+
+                  <i class="fa-solid fa-xmark" id="xIcon" style="display:none"></i>
+
+               </button>
+
+            </div>
+
+         </div>
+      </div>
+   </nav>
+
+   <br><br><br><br>
+
+   {% block content %}
+   {% endblock %}
+
+   <!-- FOOTER -->
+   <footer id="foot">
+      <div class="container">
+
+         <div class="row g-5 mb-5">
+
+            <div class="col-lg-5">
+
+               <a class="d-flex align-items-center gap-2 mb-3" href="#"
+                  style="font-size:1.15rem;font-weight:700;color:var(--tx)">
+
+                  <div class="logo-i">
+                     <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision Logo"
+                        style="width:38px;height:38px;border-radius:10px;object-fit:cover;">
+                  </div>
+
+                  ScriptVision
+               </a>
+
+               <p style="font-size:.875rem;color:var(--tx3);line-height:1.65;max-width:320px">
+                  An AI-powered handwritten answer evaluation system
+                  designed to simplify answer script evaluation and provide
+                  meaningful results and feedback.
+               </p>
+
+            </div>
+
+
+            <div class="col-6 col-md-2 fcol">
+
+               <h5>Product</h5>
+
+               <a href="#features">Features</a>
+               <a href="#how">How It Works</a>
+               <a href="#integrations">Technologies</a>
+
+            </div>
+
+
+            <div class="col-6 col-md-2 fcol">
+
+               <h5>Modules</h5>
+
+               <a href="#">Teacher</a>
+               <a href="#">Student</a>
+               <a href="#">AI Evaluation</a>
+               <a href="#">Results</a>
+
+            </div>
+
+
+            <div class="col-6 col-md-2 fcol">
+
+               <h5>Account</h5>
+
+               <a href="{% url 'Guest:Login' %}">Login</a>
+               <a href="{% url 'Guest:Studentregister' %}">Student Register</a>
+               <a href="{% url 'Guest:Teacherregister' %}">Teacher Register</a>
+
+            </div>
+
+         </div>
+
+
+         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 pt-4"
+            style="border-top:1px solid var(--bd)">
+
+            <p style="font-size:.8rem;color:var(--tx3);margin:0">
+               &copy; 2026 ScriptVision. All rights reserved.
+            </p>
+
+            <div class="d-flex gap-2">
+
+               <a href="#" class="sico">
+                  <i class="fa-brands fa-github"></i>
+               </a>
+
+               <a href="#" class="sico">
+                  <i class="fa-brands fa-linkedin-in"></i>
+               </a>
+
+            </div>
+
+         </div>
+
+      </div>
+   </footer>
+   </div>
+   <!-- ======================== SCRIPTS ======================== -->
+   <!-- jQuery -->
+   <script src="{% static 'Main/js/jquery-3.7.1.min.js' %}"></script>
+   <!-- Bootstrap 5 -->
+   <script src="{% static 'Main/js/bootstrap.bundle.min.js' %}"></script>
+   <!-- AOS -->
+   <script src="{% static 'Main/js/aos.js' %} "></script>
+   <!-- Swiper -->
+   <script src="{% static 'Main/js/chart.umd.min.js' %}"></script>
+   <!-- CounterUp -->
+   <script src="{% static 'Main/js/jquery.magnific-popup.min.js' %}"></script>
+   <!-- Main js -->
+   <script src="{% static 'Main/js/main.js' %}"></script>
+</body>
+
+</html>

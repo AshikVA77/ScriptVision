@@ -1,0 +1,549 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ScriptVision - Login</title>
+
+    <link rel="stylesheet" href="{% static 'Main/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Main/css/all.min.css' %}">
+
+    <style>
+        :root {
+            --bg: #08080d;
+            --bg2: #0d0d14;
+            --card: rgba(20, 20, 31, .88);
+            --bd: rgba(255, 255, 255, .08);
+            --tx: #f5f5f7;
+            --tx2: #b7b7c5;
+            --tx3: #777787;
+            --pur: #8b5cf6;
+            --pur2: #a78bfa;
+            --pur3: #c4b5fd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 15% 20%,
+                    rgba(124, 58, 237, .13),
+                    transparent 32%),
+                radial-gradient(circle at 85% 80%,
+                    rgba(139, 92, 246, .10),
+                    transparent 32%),
+                var(--bg);
+
+            color: var(--tx);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        /* Background glow */
+
+        .orb {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: .16;
+            pointer-events: none;
+        }
+
+        .orb.one {
+            background: #7c3aed;
+            top: -190px;
+            left: -160px;
+        }
+
+        .orb.two {
+            background: #4f46e5;
+            bottom: -200px;
+            right: -160px;
+        }
+
+
+        /* Page */
+
+        .login-wrapper {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 20px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* Card */
+
+        .login-card {
+            width: 100%;
+            max-width: 460px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(23, 23, 35, .94),
+                    rgba(12, 12, 19, .96));
+
+            border: 1px solid var(--bd);
+            border-radius: 24px;
+
+            padding: 42px;
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, .45),
+                0 0 70px rgba(124, 58, 237, .08);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        /* Brand */
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            color: var(--tx);
+            text-decoration: none;
+
+            font-size: 1.15rem;
+            font-weight: 750;
+
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(135deg,
+                    #7c3aed,
+                    #8b5cf6);
+
+            color: white;
+
+            box-shadow:
+                0 8px 28px rgba(139, 92, 246, .3);
+        }
+
+
+        /* Heading */
+
+        .login-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-heading h1 {
+            font-size: 2rem;
+            font-weight: 750;
+            letter-spacing: -.04em;
+            margin-bottom: 9px;
+        }
+
+        .gradient-text {
+            background:
+                linear-gradient(90deg,
+                    #a78bfa,
+                    #c4b5fd);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-heading p {
+            color: var(--tx3);
+            font-size: .86rem;
+            margin: 0;
+        }
+
+
+        /* Form */
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+
+            color: var(--tx2);
+
+            font-size: .78rem;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--tx3);
+
+            font-size: .85rem;
+
+            pointer-events: none;
+        }
+
+        .form-control {
+            width: 100%;
+            min-height: 49px;
+
+            border-radius: 11px;
+
+            border: 1px solid var(--bd);
+
+            background: rgba(255, 255, 255, .035);
+
+            color: var(--tx);
+
+            padding: 11px 14px 11px 42px;
+
+            font-size: .86rem;
+
+            transition: .25s ease;
+        }
+
+        .form-control::placeholder {
+            color: #5f5f6c;
+        }
+
+        .form-control:focus {
+            background: rgba(139, 92, 246, .045);
+
+            border-color: rgba(139, 92, 246, .65);
+
+            box-shadow:
+                0 0 0 4px rgba(139, 92, 246, .09);
+
+            color: var(--tx);
+
+            outline: none;
+        }
+
+
+        /* Login button */
+
+        .login-btn {
+            width: 100%;
+            min-height: 50px;
+
+            border: 0;
+            border-radius: 12px;
+
+            color: white;
+
+            font-size: .9rem;
+            font-weight: 700;
+
+            background:
+                linear-gradient(135deg,
+                    #7c3aed,
+                    #8b5cf6);
+
+            box-shadow:
+                0 12px 28px rgba(124, 58, 237, .23);
+
+            transition: .25s ease;
+
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 35px rgba(124, 58, 237, .34);
+        }
+
+        .login-btn i {
+            margin-left: 7px;
+        }
+
+
+        /* Error */
+
+        .error-box {
+            background: rgba(239, 68, 68, .08);
+
+            border: 1px solid rgba(239, 68, 68, .2);
+
+            color: #fca5a5;
+
+            border-radius: 11px;
+
+            padding: 11px 14px;
+
+            margin-bottom: 20px;
+
+            font-size: .82rem;
+        }
+
+
+        /* Register */
+
+        .register-link {
+            text-align: center;
+
+            margin-top: 23px;
+
+            color: var(--tx3);
+
+            font-size: .82rem;
+        }
+
+        .register-link a {
+            color: var(--pur2);
+
+            text-decoration: none;
+
+            font-weight: 650;
+        }
+
+        .register-link a:hover {
+            color: var(--pur3);
+        }
+
+
+        /* Home */
+
+        .home-link {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 6px;
+
+            margin-top: 20px;
+
+            color: var(--tx3);
+
+            text-decoration: none;
+
+            font-size: .8rem;
+
+            transition: .2s;
+        }
+
+        .home-link:hover {
+            color: var(--tx);
+        }
+
+        .home-link i {
+            font-size: .7rem;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 500px) {
+
+            .login-wrapper {
+                padding: 20px 14px;
+            }
+
+            .login-card {
+                padding: 30px 22px;
+                border-radius: 20px;
+            }
+
+            .login-heading h1 {
+                font-size: 1.7rem;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+
+    <main class="login-wrapper">
+
+        <div class="login-card">
+
+
+            <!-- BRAND -->
+
+            <a href="{% url 'Guest:index' %}" class="brand">
+
+                <span class="logo">
+                    <i class="fa-solid fa-file-pen"></i>
+                </span>
+
+                ScriptVision
+
+            </a>
+
+
+            <!-- HEADING -->
+
+            <div class="login-heading">
+
+                <h1>
+                    Welcome <span class="gradient-text">back</span>
+                </h1>
+
+                <p>
+                    Sign in to continue to ScriptVision
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            {% if error_message %}
+
+            <div class="error-box">
+
+                <i class="fa-solid fa-circle-exclamation me-2"></i>
+
+                {{ error_message }}
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- LOGIN FORM -->
+
+            <form method="POST" action="">
+
+                {% csrf_token %}
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"
+                            required>
+
+                        <i class="fa-regular fa-envelope input-icon"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Enter your password" required>
+
+                        <i class="fa-solid fa-lock input-icon"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button type="submit" class="login-btn">
+
+                    Login
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- REGISTER -->
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <a href="{% url 'Guest:Register' %}">
+                    Register now
+                </a>
+
+            </div>
+
+
+            <!-- HOME -->
+
+            <a href="{% url 'Guest:index' %}" class="home-link">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Home
+
+            </a>
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

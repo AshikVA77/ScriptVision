@@ -1,0 +1,580 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Script Vision - Student Feedback</title>
+
+    <style>
+        /* =================================
+   Student Feedback
+================================= */
+
+        .sv-feedback-page {
+            min-height: 75vh;
+            padding: 80px 20px;
+        }
+
+        .sv-feedback-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+
+        /* Header */
+
+        .sv-feedback-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-feedback-header h2 {
+            margin: 0 0 10px;
+            color: var(--tx);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .sv-feedback-header p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.95rem;
+        }
+
+
+        /* Main Section */
+
+        .sv-feedback-section {
+            background: var(--bg3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* Section Title */
+
+        .sv-feedback-section-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-bottom: 25px;
+        }
+
+        .sv-feedback-section-title>i {
+            margin-top: 3px;
+            color: var(--pur2);
+            font-size: 1.2rem;
+        }
+
+        .sv-feedback-section-title h3 {
+            margin: 0 0 4px;
+            color: var(--tx);
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .sv-feedback-section-title p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.82rem;
+        }
+
+
+        /* Error */
+
+        .sv-feedback-error {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 13px 15px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            font-size: 0.88rem;
+        }
+
+        .sv-feedback-error i {
+            color: #f87171;
+        }
+
+
+        /* Form */
+
+        .sv-feedback-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--tx2);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .sv-feedback-form select,
+        .sv-feedback-form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: var(--bg2);
+            color: var(--tx);
+            font-size: 0.92rem;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        .sv-feedback-form select {
+            padding: 13px 15px;
+            margin-bottom: 20px;
+        }
+
+        .sv-feedback-form textarea {
+            min-height: 150px;
+            padding: 14px 15px;
+            resize: vertical;
+            margin-bottom: 18px;
+        }
+
+        .sv-feedback-form select:focus,
+        .sv-feedback-form textarea:focus {
+            border-color: var(--pur);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+        }
+
+        .sv-feedback-form select option {
+            background: var(--bg3);
+            color: var(--tx);
+        }
+
+        .sv-feedback-form textarea::placeholder {
+            color: var(--tx3);
+        }
+
+
+        /* Submit Button */
+
+        .sv-feedback-submit {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pur), #7c3aed);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .sv-feedback-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+        }
+
+
+        /* Feedback List */
+
+        .sv-feedback-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+
+        /* Feedback Card */
+
+        .sv-feedback-card {
+            padding: 20px;
+            border-radius: 14px;
+            background: var(--bg2);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: 0.25s ease;
+        }
+
+        .sv-feedback-card:hover {
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+
+        /* Card Header */
+
+        .sv-feedback-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sv-feedback-card-header h4 {
+            margin: 0 0 6px;
+            color: var(--tx);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .sv-feedback-date {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.78rem;
+        }
+
+        .sv-feedback-date i {
+            margin-right: 5px;
+            color: var(--pur2);
+        }
+
+
+        /* Status */
+
+        .sv-feedback-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: var(--pur2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+
+        /* Message */
+
+        .sv-feedback-message-section {
+            margin-bottom: 18px;
+        }
+
+        .sv-feedback-label {
+            margin: 0 0 8px;
+            color: var(--tx2);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .sv-feedback-message {
+            padding: 14px 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--tx2);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+
+        /* Teacher Reply */
+
+        .sv-feedback-reply {
+            padding: 16px;
+            border-radius: 11px;
+            background: rgba(139, 92, 246, 0.05);
+            border-left: 3px solid var(--pur);
+        }
+
+        .sv-feedback-reply-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--tx);
+            font-size: 0.85rem;
+        }
+
+        .sv-feedback-reply-title i {
+            color: var(--pur2);
+        }
+
+        .sv-feedback-reply-text {
+            margin: 0 0 10px;
+            color: var(--tx2);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .sv-feedback-waiting {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.82rem;
+        }
+
+        .sv-feedback-waiting i {
+            color: var(--pur2);
+        }
+
+
+        /* Empty State */
+
+        .sv-feedback-empty {
+            text-align: center;
+            padding: 45px 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+        }
+
+        .sv-feedback-empty-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            border-radius: 14px;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--pur2);
+            font-size: 1.3rem;
+        }
+
+        .sv-feedback-empty h4 {
+            margin: 0 0 7px;
+            color: var(--tx);
+            font-size: 1rem;
+        }
+
+        .sv-feedback-empty p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.85rem;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .sv-feedback-page {
+                padding: 50px 15px;
+            }
+
+            .sv-feedback-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .sv-feedback-section {
+                padding: 22px 18px;
+            }
+
+            .sv-feedback-card-header {
+                flex-direction: column;
+            }
+
+            .sv-feedback-status {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .sv-feedback-page {
+                padding: 40px 12px;
+            }
+
+            .sv-feedback-section {
+                padding: 20px 15px;
+            }
+
+            .sv-feedback-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sv-feedback-page">
+
+        <div class="sv-feedback-container">
+
+            <div class="sv-feedback-header">
+                <h2>Student Feedback</h2>
+                <p>Submit feedback or request a revaluation for an exam.</p>
+            </div>
+
+            <!-- Submit Feedback -->
+            <div class="sv-feedback-section">
+
+                <div class="sv-feedback-section-title">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <div>
+                        <h3>Submit New Feedback</h3>
+                        <p>Share your feedback or request a revaluation.</p>
+                    </div>
+                </div>
+
+                {% if error %}
+                <div class="sv-feedback-error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+
+                <form method="POST" class="sv-feedback-form">
+                    {% csrf_token %}
+
+                    <label for="result_id">Select Exam</label>
+
+                    <select name="result_id" id="result_id" required>
+                        <option value="">-- Select Exam --</option>
+
+                        {% for result in student_results %}
+                        <option value="{{ result.result_id }}">
+                            {{ result.stdexam.exam.exam_name }}
+                            - {{ result.stdexam.exam.subject.subject_name }}
+                            ({{ result.stdexam.exam.exam_date|date:"d-m-Y" }})
+                        </option>
+                        {% empty %}
+                        <option value="" disabled>
+                            No exam results available
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="student_comment">Your Feedback</label>
+
+                    <textarea name="student_comment" id="student_comment"
+                        placeholder="Write your revaluation request, exam issue, or feedback here..."
+                        required></textarea>
+
+                    <button type="submit" class="sv-feedback-submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Feedback
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Recent Feedback -->
+            <div class="sv-feedback-section">
+
+                <div class="sv-feedback-section-title">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <div>
+                        <h3>Recent Feedback</h3>
+                        <p>View your previous feedback and teacher responses.</p>
+                    </div>
+                </div>
+
+                <div class="sv-feedback-list">
+
+                    {% for feedback in feedback_list %}
+
+                    <div class="sv-feedback-card">
+
+                        <div class="sv-feedback-card-header">
+
+                            <div>
+                                <h4>
+                                    {{ feedback.result.stdexam.exam.exam_name }}
+                                </h4>
+
+                                <p class="sv-feedback-date">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    Submitted on:
+                                    {{ feedback.created_at|date:"d-m-Y, h:i A" }}
+                                </p>
+                            </div>
+
+                            <span class="sv-feedback-status">
+                                {{ feedback.status }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="sv-feedback-message-section">
+
+                            <p class="sv-feedback-label">
+                                Your Message
+                            </p>
+
+                            <div class="sv-feedback-message">
+                                {{ feedback.student_comment }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="sv-feedback-reply">
+
+                            <div class="sv-feedback-reply-title">
+                                <i class="fa-solid fa-reply"></i>
+                                <strong>Teacher Reply</strong>
+                            </div>
+
+                            {% if feedback.reply %}
+
+                            <p class="sv-feedback-reply-text">
+                                {{ feedback.reply }}
+                            </p>
+
+                            {% if feedback.reply_date %}
+                            <p class="sv-feedback-date">
+                                <i class="fa-regular fa-calendar-check"></i>
+                                Replied on:
+                                {{ feedback.reply_date|date:"d-m-Y, h:i A" }}
+                            </p>
+                            {% endif %}
+
+                            {% else %}
+
+                            <p class="sv-feedback-waiting">
+                                <i class="fa-regular fa-clock"></i>
+                                Waiting for teacher's reply.
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="sv-feedback-empty">
+                        <div class="sv-feedback-empty-icon">
+                            <i class="fa-regular fa-comment"></i>
+                        </div>
+
+                        <h4>No Feedback Yet</h4>
+
+                        <p>
+                            You have not submitted any feedback yet.
+                        </p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}

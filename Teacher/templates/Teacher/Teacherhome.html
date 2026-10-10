@@ -1,0 +1,890 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Teacher Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!--Favicon-->
+    <link rel="icon" type="image/png" href="{% static 'Main/img/scriptvisionlogo.png' %}">
+    <!-- Bootstrap 5.3 -->
+    <link href="{% static 'Main/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <!-- AOS Animate on Scroll -->
+    <link href="{% static 'Main/css/aos.css' %}" rel="stylesheet" />
+    <!-- Swiper -->
+    <link href="{% static 'Main/css/swiper-bundle.min.css' %}" rel="stylesheet" />
+    <!-- all min css -->
+    <link rel="stylesheet" href="{% static 'Main/css/all.min.css' %}" />
+    <!-- magnific CSS -->
+    <link rel="stylesheet" href="{% static 'Main/css/magnific-popup.css' %}" />
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'Main/css/style.css' %}" />
+</head>
+
+<body>
+    <!-- ======================== LANDING PAGE ======================== -->
+    <div id="landing">
+        <!-- NAVBAR -->
+        <nav id="nbar">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <a href="{% url 'Teacher:Teacherhome' %}" class="d-flex align-items-center gap-2"
+                        style="font-size:1.2rem;font-weight:700;color:var(--tx);text-decoration:none;">
+
+                        <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision Logo"
+                            style="width:38px;height:38px;border-radius:10px;object-fit:cover;">
+
+                        <span>Script Vision</span>
+                    </a>
+                    <div class="d-none d-lg-flex align-items-center gap-1 mx-auto">                        
+                        <a href="{% url 'Teacher:TeacherProfile'%}" class="nav-link">View Profile</a>
+                        <a href="{% url 'Teacher:CreateExam'%}" class="nav-link">Create Exam</a>
+                        <a href="{% url 'Teacher:Questions'%}" class="nav-link">Add Questions / Model Answers</a>
+                        <a href="{% url 'Teacher:UploadScripts'%}" class="nav-link">Upload Answer Scripts</a>
+                        <a href="{% url 'Teacher:TeacherFeedback'%}" class="nav-link">Feedback Reply</a>
+                        <a href="{% url 'Teacher:ExamResults'%}" class="nav-link">Exam Results</a>
+                        <a href="{% url 'Teacher:Logout'%}" class="nav-link">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="mbmenu">
+            <a href="#features" class="nav-link d-block py-3 border-bottom"
+                style="border-color:var(--bd)!important">Features</a>
+            <a href="#integrations" class="nav-link d-block py-3 border-bottom"
+                style="border-color:var(--bd)!important">Integrations</a>
+            <a href="#pricing" class="nav-link d-block py-3 border-bottom"
+                style="border-color:var(--bd)!important">Pricing</a>
+            <a href="#faq" class="nav-link d-block py-3">FAQ</a>
+            <div class="d-flex gap-2 mt-3">
+                <button class="boc flex-fill py-2 btn" data-bs-toggle="offcanvas" data-bs-target="#lofc"
+                    onclick="swTab('login')">Log in</button>
+                <button class="bgrd flex-fill py-2 btn" data-bs-toggle="offcanvas" data-bs-target="#lofc"
+                    onclick="swTab('signup')">Get Started</button>
+            </div>
+        </div>
+        <!-- HERO -->
+        <section id="hero">
+            <div class="aur aur-a" style="top:-80px;left:-120px"></div>
+            <div class="aur aur-b" style="top:180px;right:-180px"></div>
+            <div class="aur aur-a" style="bottom:-80px;left:45%;transform:translateX(-50%);opacity:.4"></div>
+            <div class="container position-relative" style="z-index:2">
+                <div class="text-center">
+                    <div class="afu" style="animation-delay:.05s">
+                        <span class="hbadge">
+                            <span class="bdot"></span>
+                            AI-Powered Handwritten Answer Evaluation
+                        </span>
+                    </div>
+
+                    <h1 class="h1 afu" style="animation-delay:.12s">
+                        Evaluate Handwritten Answers<br>
+                        with <span class="gt">Artificial Intelligence</span>
+                    </h1>
+
+                    <p class="mx-auto afu"
+                        style="max-width:580px;font-size:clamp(.95rem,1.8vw,1.2rem);color:var(--tx2);margin-bottom:36px;animation-delay:.2s">
+                        ScriptVision uses OCR and AI-based semantic analysis to evaluate handwritten answer scripts,
+                        compare
+                        answers with model answers, and provide meaningful feedback.
+                    </p>
+
+                    <div class="mt-5 afu" style="animation-delay:.4s">
+                        <p
+                            style="font-size:.71rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px">
+                            Designed for
+                        </p>
+
+                        <div class="d-flex align-items-center justify-content-center gap-4 flex-wrap">
+                            <span class="tlog">Students</span>
+                            <span class="tlog">Teachers</span>
+                            <span class="tlog">Handwritten Scripts</span>
+                            <span class="tlog">AI Evaluation</span>
+                            <span class="tlog">Semantic Analysis</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="col-lg-11 adi">
+                        <div class="dwrap">
+
+                            <div class="dtbar">
+                                <span class="dd" style="background:#ff5f57"></span>
+                                <span class="dd" style="background:#ffbd2e"></span>
+                                <span class="dd" style="background:#28c840"></span>
+                                <span class="ms-auto me-auto" style="font-size:.76rem;color:var(--tx3)">
+                                    ScriptVision � AI Answer Evaluation
+                                </span>
+                            </div>
+
+                            <div class="dgrid">
+
+                                <!-- Left side -->
+                                <div class="dside">
+
+                                    <div
+                                        style="font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);padding:0 10px 10px;font-weight:700">
+                                        Workflow
+                                    </div>
+
+                                    <button class="dsi on">
+                                        <i class="fa-solid fa-file-circle-check"></i>
+                                        Select Exam
+                                    </button>
+
+                                    <button class="dsi">
+                                        <i class="fa-solid fa-user"></i>
+                                        Select Student
+                                    </button>
+
+                                    <button class="dsi">
+                                        <i class="fa-solid fa-upload"></i>
+                                        Upload Script
+                                    </button>
+
+                                    <button class="dsi">
+                                        <i class="fa-solid fa-robot"></i>
+                                        AI Evaluation
+                                    </button>
+
+                                    <button class="dsi">
+                                        <i class="fa-solid fa-chart-simple"></i>
+                                        View Result
+                                    </button>
+
+                                </div>
+
+                                <!-- Main content -->
+                                <div class="p-3">
+
+                                    <!-- Workflow -->
+                                    <div class="row g-2 mb-3">
+
+                                        <div class="col-6 col-sm-3">
+                                            <div class="stpill">
+                                                <div style="font-size:1.15rem;font-weight:700">
+                                                    01
+                                                </div>
+                                                <div style="font-size:.67rem;color:var(--tx3)">
+                                                    Select Exam
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-sm-3">
+                                            <div class="stpill">
+                                                <div style="font-size:1.15rem;font-weight:700">
+                                                    02
+                                                </div>
+                                                <div style="font-size:.67rem;color:var(--tx3)">
+                                                    Select Student
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-sm-3">
+                                            <div class="stpill">
+                                                <div style="font-size:1.15rem;font-weight:700">
+                                                    03
+                                                </div>
+                                                <div style="font-size:.67rem;color:var(--tx3)">
+                                                    Upload Script
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-sm-3">
+                                            <div class="stpill">
+                                                <div style="font-size:1.15rem;font-weight:700">
+                                                    04
+                                                </div>
+                                                <div style="font-size:.67rem;color:var(--tx3)">
+                                                    AI Evaluation
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Evaluation preview -->
+                                    <div class="row g-2">
+
+                                        <div class="col-sm-7">
+                                            <div
+                                                style="background:var(--bg3);border:1px solid var(--bd);border-radius:12px;padding:14px">
+
+                                                <div
+                                                    style="font-size:.73rem;color:var(--tx3);margin-bottom:12px;font-weight:600">
+                                                    <i class="fa-solid fa-file-pen me-1"></i>
+                                                    Answer Script
+                                                </div>
+
+                                                <div
+                                                    style="background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px">
+
+                                                    <div style="font-size:.7rem;color:var(--tx3);margin-bottom:8px">
+                                                        Question 1
+                                                    </div>
+
+                                                    <div style="font-size:.82rem;line-height:1.6">
+                                                        Explain the OSI reference model and
+                                                        describe its seven layers.
+                                                    </div>
+
+                                                    <div style="margin-top:12px;font-size:.68rem;color:var(--tx3)">
+                                                        Handwritten answer � OCR processed
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                            <div
+                                                style="background:var(--bg3);border:1px solid var(--bd);border-radius:12px;padding:12px;height:100%;display:flex;flex-direction:column;gap:8px">
+
+                                                <div style="font-size:.71rem;color:var(--tx3);font-weight:600">
+
+                                                    <span
+                                                        style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pur);box-shadow:0 0 6px var(--pur);margin-right:6px;animation:bpls 2s infinite">
+                                                    </span>
+
+                                                    AI Evaluation
+                                                </div>
+
+                                                <div class="cbbl cbus">
+                                                    Evaluate Answer
+                                                </div>
+
+                                                <div class="cbbl cbai">
+                                                    <strong>Evaluation complete.</strong>
+                                                    Answer processed using OCR and
+                                                    semantic similarity analysis.
+                                                </div>
+
+                                                <div
+                                                    style="display:flex;justify-content:space-between;padding:6px 12px;font-size:.7rem">
+
+                                                    <span style="color:var(--tx3)">
+                                                        Result
+                                                    </span>
+
+                                                    <strong>
+                                                        8 / 10
+                                                    </strong>
+
+                                                </div>
+
+                                                <div style="display:flex;gap:4px;padding:8px 12px">
+
+                                                    <div class="tdot"></div>
+                                                    <div class="tdot" style="animation-delay:.15s"></div>
+                                                    <div class="tdot" style="animation-delay:.3s"></div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- PROBLEM -->
+      <section class="sp position-relative">
+         <div class="aur aur-b" style="top:50%;right:-200px;transform:translateY(-50%)"></div>
+
+         <div class="container position-relative" style="z-index:1">
+
+            <div class="text-center mb-5 rv">
+               <span class="slbl">The Problem</span>
+
+               <h2 class="stitle">
+                  Handwritten evaluation is <span class="gt">time-consuming</span>
+               </h2>
+
+               <p class="ssub mx-auto">
+                  Teachers spend significant time manually evaluating handwritten answer scripts,
+                  checking answers, calculating marks, and preparing feedback.
+               </p>
+            </div>
+
+            <div class="row g-4">
+
+               <div class="col-md-4 rv">
+                  <div class="gc p-4 h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+
+                        <i class="fa-regular fa-clock fa-lg" style="color:#f87171"></i>
+
+                     </div>
+
+                     <h3 class="fw-semibold fs-5 mb-2">
+                        Time-Consuming Evaluation
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Teachers need to spend considerable time reading and evaluating
+                        large numbers of handwritten answer scripts manually.
+                     </p>
+
+                  </div>
+               </div>
+
+
+               <div class="col-md-4 rv" style="transition-delay:.1s">
+                  <div class="gc p-4 h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+
+                        <i class="fa-solid fa-pen-to-square fa-lg" style="color:#fbbf24"></i>
+
+                     </div>
+
+                     <h3 class="fw-semibold fs-5 mb-2">
+                        Manual Marking
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Each answer must be checked against the expected answer and
+                        marks have to be assigned manually for every student.
+                     </p>
+
+                  </div>
+               </div>
+
+
+               <div class="col-md-4 rv" style="transition-delay:.2s">
+                  <div class="gc p-4 h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+
+                        <i class="fa-solid fa-comments fa-lg" style="color:#a78bfa"></i>
+
+                     </div>
+
+                     <h3 class="fw-semibold fs-5 mb-2">
+                        Limited Feedback
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Providing detailed and consistent feedback for every handwritten
+                        answer can be difficult when evaluation is done completely manually.
+                     </p>
+
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </section>
+      <!-- FEATURES -->
+      <section id="features" class="sp" style="background:var(--bg2)">
+         <div class="container">
+
+            <div class="text-center mb-5 rv">
+               <span class="slbl">Features</span>
+
+               <h2 class="stitle">
+                  Everything you need for <span class="gt">AI-assisted evaluation</span>
+               </h2>
+
+               <p class="ssub mx-auto">
+                  ScriptVision provides tools to simplify handwritten answer evaluation
+                  and help teachers manage student results efficiently.
+               </p>
+            </div>
+
+            <div class="row g-3">
+
+               <!-- Feature 1 -->
+               <div class="col-md-4 rv">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-pen"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Exam Management
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Teachers can create and manage exams by selecting the
+                        subject, exam type, date, academic year, and total marks.
+                     </p>
+
+                     <span class="ftag">Exam Management</span>
+
+                  </div>
+               </div>
+
+
+               <!-- Feature 2 -->
+               <div class="col-md-4 rv" style="transition-delay:.05s">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-users"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Student Selection
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Teachers can select students associated with an exam and
+                        manage their answer-script evaluation individually.
+                     </p>
+
+                     <span class="ftag">Student Management</span>
+
+                  </div>
+               </div>
+
+
+               <!-- Feature 3 -->
+               <div class="col-md-4 rv" style="transition-delay:.1s">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-upload"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Answer Script Upload
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Teachers can upload handwritten answer scripts for individual
+                        students directly through the evaluation workflow.
+                     </p>
+
+                     <span class="ftag">Script Upload</span>
+
+                  </div>
+               </div>
+
+
+               <!-- Feature 4 -->
+               <div class="col-md-4 rv" style="transition-delay:.15s">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-eye"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        OCR Processing
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Handwritten answer scripts are processed using Optical
+                        Character Recognition to extract text from the uploaded image.
+                     </p>
+
+                     <span class="ftag">OCR</span>
+
+                  </div>
+               </div>
+
+
+               <!-- Feature 5 -->
+               <div class="col-md-4 rv" style="transition-delay:.2s">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-robot"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        AI-Based Evaluation
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Extracted answers can be analyzed using AI-based semantic
+                        similarity to compare the student's response with the expected answer.
+                     </p>
+
+                     <span class="ftag">AI Evaluation</span>
+
+                  </div>
+               </div>
+
+
+               <!-- Feature 6 -->
+               <div class="col-md-4 rv" style="transition-delay:.25s">
+                  <div class="gc p-4 h-100">
+
+                     <div class="ftico">
+                        <i class="fa-solid fa-chart-simple"></i>
+                     </div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Results &amp; Feedback
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        Students can view their evaluation results and submit feedback,
+                        while teachers can review and respond to student feedback.
+                     </p>
+
+                     <span class="ftag">Results &amp; Feedback</span>
+
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </section>
+      <!-- HOW IT WORKS -->
+      <section id="how" class="sp" style="background:var(--bg3)">
+         <div class="container">
+
+            <div class="text-center mb-5 rv">
+               <span class="slbl">How It Works</span>
+
+               <h2 class="stitle">
+                  Evaluate answers in <span class="gt">3 simple steps</span>
+               </h2>
+            </div>
+
+            <div class="row g-4">
+
+               <div class="col-md-4 rv">
+                  <div class="gc p-4 h-100 text-center">
+
+                     <div class="hnum">1</div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Select Exam &amp; Student
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        The teacher selects the exam and the student whose
+                        handwritten answer script needs to be evaluated.
+                     </p>
+
+                  </div>
+               </div>
+
+
+               <div class="col-md-4 rv" style="transition-delay:.1s">
+                  <div class="gc p-4 h-100 text-center">
+
+                     <div class="hnum">2</div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        Upload Answer Script
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        The teacher uploads the student's handwritten answer
+                        script. OCR processing extracts the written content
+                        from the uploaded script.
+                     </p>
+
+                  </div>
+               </div>
+
+
+               <div class="col-md-4 rv" style="transition-delay:.2s">
+                  <div class="gc p-4 h-100 text-center">
+
+                     <div class="hnum">3</div>
+
+                     <h3 class="fs-5 fw-semibold mb-2">
+                        AI Evaluation &amp; Results
+                     </h3>
+
+                     <p style="font-size:.875rem;color:var(--tx2)">
+                        The extracted answer is analyzed using AI-based
+                        semantic evaluation, and the resulting marks and
+                        feedback can be viewed by the student.
+                     </p>
+
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </section>
+      <!-- TECHNOLOGIES -->
+      <section id="integrations" class="sp position-relative">
+         <div class="aur aur-b" style="top:50%;right:-200px;transform:translateY(-50%)"></div>
+
+         <div class="container position-relative" style="z-index:1">
+
+            <div class="text-center mb-5 rv">
+               <span class="slbl">Technologies</span>
+
+               <h2 class="stitle">
+                  Built with <span class="gt">modern technologies</span>
+               </h2>
+
+               <p class="ssub mx-auto">
+                  ScriptVision combines web technologies, OCR, and AI techniques
+                  to simplify handwritten answer evaluation.
+               </p>
+            </div>
+
+            <div class="row g-3 justify-content-center rv">
+
+               <!-- Django -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(34,139,34,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-brands fa-python fa-xl" style="color:#34d399"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">Python &amp; Django</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        Backend development and web application framework
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+
+               <!-- OCR -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(99,102,241,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-solid fa-eye fa-xl" style="color:#a78bfa"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">OCR</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        Extracts text from handwritten answer scripts
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+
+               <!-- OpenCV -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(0,120,215,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-solid fa-image fa-xl" style="color:#60a5fa"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">OpenCV</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        Image preprocessing for handwritten scripts
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+
+               <!-- AI -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-solid fa-robot fa-xl" style="color:#c084fc"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">AI Evaluation</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        AI-based analysis of student answers
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+
+               <!-- Sentence Transformers -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(245,158,11,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-solid fa-brain fa-xl" style="color:#fbbf24"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">Semantic Similarity</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        Compares student answers with expected answers
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+
+               <!-- SQLite -->
+               <div class="col-6 col-md-4">
+                  <div class="gc p-4 text-center h-100">
+
+                     <div
+                        style="width:52px;height:52px;border-radius:14px;background:rgba(52,168,83,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+                        <i class="fa-solid fa-database fa-xl" style="color:#34d399"></i>
+                     </div>
+
+                     <div class="fw-semibold mb-1">SQLite</div>
+
+                     <div style="font-size:.78rem;color:var(--tx3);margin-bottom:8px">
+                        Stores users, exams, results, and evaluation data
+                     </div>
+
+                     <span class="ftag">
+                        <i class="fa-solid fa-check me-1"></i>Used
+                     </span>
+
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </section>
+      <!-- FOOTER -->
+      <footer id="foot">
+         <div class="container">
+
+            <div class="row g-5 mb-5">
+
+               <div class="col-lg-5">
+
+                  <a class="d-flex align-items-center gap-2 mb-3" href="#"
+                     style="font-size:1.15rem;font-weight:700;color:var(--tx)">
+
+                     <div class="logo-i">
+                        <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision Logo" style="width:32px;height:32px">
+                     </div>
+
+                     ScriptVision
+                  </a>
+
+                  <p style="font-size:.875rem;color:var(--tx3);line-height:1.65;max-width:320px">
+                     An AI-powered handwritten answer evaluation system
+                     designed to simplify answer script evaluation and provide
+                     meaningful results and feedback.
+                  </p>
+
+               </div>
+
+
+               <div class="col-6 col-md-2 fcol">
+
+                  <h5>Product</h5>
+
+                  <a href="#features">Features</a>
+                  <a href="#how">How It Works</a>
+                  <a href="#integrations">Technologies</a>
+
+               </div>
+
+
+               <div class="col-6 col-md-2 fcol">
+
+                  <h5>Modules</h5>
+
+                  <a href="#">Teacher</a>
+                  <a href="#">Student</a>
+                  <a href="#">AI Evaluation</a>
+                  <a href="#">Results</a>
+
+               </div>
+
+
+               <div class="col-6 col-md-2 fcol">
+
+                  <h5>Account</h5>
+
+                  <a href="{% url 'Guest:Login' %}">Login</a>
+                  <a href="{% url 'Guest:Studentregister' %}">Student Register</a>
+                  <a href="{% url 'Guest:Teacherregister' %}">Teacher Register</a>
+
+               </div>
+
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 pt-4"
+               style="border-top:1px solid var(--bd)">
+
+               <p style="font-size:.8rem;color:var(--tx3);margin:0">
+                  &copy; 2026 ScriptVision. All rights reserved.
+               </p>
+
+               <div class="d-flex gap-2">
+
+                  <a href="#" class="sico">
+                     <i class="fa-brands fa-github"></i>
+                  </a>
+
+                  <a href="#" class="sico">
+                     <i class="fa-brands fa-linkedin-in"></i>
+                  </a>
+
+               </div>
+
+            </div>
+
+         </div>
+      </footer>
+    </div>
+    <!-- ======================== SCRIPTS ======================== -->
+    <!-- jQuery -->
+    <script src="{% static 'Main/js/jquery-3.7.1.min.js' %}"></script>
+    <!-- Bootstrap 5 -->
+    <script src="{% static 'Main/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AOS -->
+    <script src="{% static 'Main/js/aos.js' %} "></script>
+    <!-- Swiper -->
+    <script src="{% static 'Main/js/chart.umd.min.js' %}"></script>
+    <!-- CounterUp -->
+    <script src="{% static 'Main/js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main js -->
+    <script src="{% static 'Main/js/main.js' %}"></script>
+</body>
+
+</html>

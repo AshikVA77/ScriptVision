@@ -1,0 +1,680 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Script Vision - Result</title>
+
+    <style>
+        /* =========================================
+   ScriptVision - Subject Result
+   All classes use sv-subject-result- prefix
+   ========================================= */
+
+        .sv-subject-result-page {
+            min-height: calc(100vh - 80px);
+            padding: 100px 20px 80px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+   Background Glow
+   ========================================= */
+
+        .sv-subject-result-glow {
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            filter: blur(110px);
+            pointer-events: none;
+        }
+
+        .sv-subject-result-glow-one {
+            top: 20px;
+            left: -190px;
+            background: rgba(139, 92, 246, 0.10);
+        }
+
+        .sv-subject-result-glow-two {
+            right: -180px;
+            bottom: -170px;
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+
+        /* =========================================
+   Wrapper
+   ========================================= */
+
+        .sv-subject-result-wrapper {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* =========================================
+   Heading
+   ========================================= */
+
+        .sv-subject-result-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-subject-result-label {
+            display: inline-block;
+            color: var(--pur2);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        .sv-subject-result-heading h2 {
+            margin: 0;
+            color: var(--tx);
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            font-weight: 700;
+        }
+
+        .sv-subject-result-heading p {
+            margin: 10px auto 0;
+            max-width: 600px;
+            color: var(--tx2);
+            font-size: 0.95rem;
+        }
+
+
+        /* =========================================
+   Main Card
+   ========================================= */
+
+        .sv-subject-result-card {
+            background: rgba(17, 17, 26, 0.84);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.28),
+                0 0 40px rgba(139, 92, 246, 0.04);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+
+        /* =========================================
+   Card Header
+   ========================================= */
+
+        .sv-subject-result-card-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .sv-subject-result-card-top h3 {
+            margin: 0 0 5px;
+            color: var(--tx);
+            font-size: 1.2rem;
+            font-weight: 650;
+        }
+
+        .sv-subject-result-card-top p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.8rem;
+        }
+
+        .sv-subject-result-count {
+            padding: 6px 11px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.16);
+            color: var(--pur2);
+            font-size: 0.72rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+   Table
+   ========================================= */
+
+        .sv-subject-result-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .sv-subject-result-table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+
+        /* Header */
+
+        .sv-subject-result-table th {
+            padding: 14px 13px;
+            text-align: left;
+            color: var(--tx3);
+            font-size: 0.67rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            white-space: nowrap;
+        }
+
+
+        /* Body */
+
+        .sv-subject-result-table td {
+            padding: 17px 13px;
+            color: var(--tx2);
+            font-size: 0.82rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .sv-subject-result-table tbody tr {
+            transition: 0.2s ease;
+        }
+
+        .sv-subject-result-table tbody tr:hover {
+            background: rgba(139, 92, 246, 0.035);
+        }
+
+        .sv-subject-result-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================================
+   Serial Number
+   ========================================= */
+
+        .sv-subject-result-sl {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--tx3);
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   AI Marks
+   ========================================= */
+
+        .sv-subject-result-ai {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: rgba(139, 92, 246, 0.08);
+            color: var(--pur2);
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Teacher Marks
+   ========================================= */
+
+        .sv-subject-result-teacher {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: rgba(96, 165, 250, 0.08);
+            color: #93c5fd;
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Final Marks
+   ========================================= */
+
+        .sv-subject-result-final {
+            color: var(--tx);
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================================
+   Similarity
+   ========================================= */
+
+        .sv-subject-result-similarity {
+            min-width: 100px;
+        }
+
+        .sv-subject-result-similarity-bar {
+            width: 80px;
+            height: 5px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .sv-subject-result-similarity-bar span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg,
+                    var(--pur),
+                    var(--pur2));
+        }
+
+        .sv-subject-result-similarity>span {
+            color: var(--tx2);
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Status
+   ========================================= */
+
+        .sv-subject-result-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.14);
+            color: #6ee7b7;
+            font-size: 0.71rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .sv-subject-result-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #34d399;
+        }
+
+
+        /* =========================================
+   Date
+   ========================================= */
+
+        .sv-subject-result-date {
+            display: block;
+            min-width: 145px;
+            color: var(--tx3);
+            font-size: 0.74rem;
+        }
+
+
+        /* =========================================
+   Feedback Button
+   ========================================= */
+
+        .sv-subject-result-feedback {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 9px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.16);
+            color: var(--pur2) !important;
+            text-decoration: none !important;
+            font-size: 0.76rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: 0.25s ease;
+        }
+
+        .sv-subject-result-feedback:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.30);
+            color: var(--pur3) !important;
+        }
+
+
+        /* =========================================
+   Empty State
+   ========================================= */
+
+        .sv-subject-result-empty {
+            text-align: center;
+            padding: 55px 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+        }
+
+        .sv-subject-result-empty-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: rgba(139, 92, 246, 0.08);
+            color: var(--pur2);
+            font-size: 1.15rem;
+        }
+
+        .sv-subject-result-empty h4 {
+            margin: 0 0 7px;
+            color: var(--tx);
+            font-size: 1rem;
+        }
+
+        .sv-subject-result-empty p {
+            max-width: 450px;
+            margin: 0 auto;
+            color: var(--tx3);
+            font-size: 0.82rem;
+        }
+
+
+        /* =========================================
+   Back Button
+   ========================================= */
+
+        .sv-subject-result-back {
+            margin-top: 25px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .sv-subject-result-back a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--tx2) !important;
+            text-decoration: none !important;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .sv-subject-result-back a:hover {
+            color: var(--pur2) !important;
+        }
+
+
+        /* =========================================
+   Mobile
+   ========================================= */
+
+        @media (max-width: 750px) {
+
+            .sv-subject-result-page {
+                padding: 90px 15px 60px;
+            }
+
+            .sv-subject-result-card {
+                padding: 22px;
+                border-radius: 18px;
+            }
+
+            .sv-subject-result-card-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .sv-subject-result-table {
+                min-width: 1050px;
+            }
+
+            .sv-subject-result-table-wrap {
+                margin: 0 -5px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sv-subject-result-page">
+
+        <div class="sv-subject-result-glow sv-subject-result-glow-one"></div>
+        <div class="sv-subject-result-glow sv-subject-result-glow-two"></div>
+
+        <div class="sv-subject-result-wrapper">
+
+            <!-- Heading -->
+            <div class="sv-subject-result-heading">
+
+                <span class="sv-subject-result-label">
+                    Examination Details
+                </span>
+
+                <h2>
+                    {{ subject.subject_name }}
+                </h2>
+
+                <p>
+                    Detailed evaluation results for this subject.
+                </p>
+
+            </div>
+
+
+            <!-- Result Card -->
+            <div class="sv-subject-result-card">
+
+                <div class="sv-subject-result-card-top">
+
+                    <div>
+                        <h3>Evaluation Results</h3>
+                        <p>AI evaluation and teacher assessment</p>
+                    </div>
+
+                    {% if evaluations %}
+                    <span class="sv-subject-result-count">
+                        {{ evaluations|length }}
+                        Evaluation{{ evaluations|length|pluralize }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if evaluations %}
+
+                <div class="sv-subject-result-table-wrap">
+
+                    <table class="sv-subject-result-table">
+
+                        <thead>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>AI Marks</th>
+                                <th>Teacher Marks</th>
+                                <th>Final Marks</th>
+                                <th>Similarity</th>
+                                <th>Status</th>
+                                <th>Evaluated On</th>
+                                <th>AI Feedback</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for evaluation in evaluations %}
+
+                            <tr>
+
+                                <!-- Sl No -->
+                                <td>
+                                    <span class="sv-subject-result-sl">
+                                        {{ forloop.counter }}
+                                    </span>
+                                </td>
+
+
+                                <!-- AI Marks -->
+                                <td>
+                                    <span class="sv-subject-result-ai">
+                                        {{ evaluation.ai_score }}
+                                    </span>
+                                </td>
+
+
+                                <!-- Teacher Marks -->
+                                <td>
+                                    <span class="sv-subject-result-teacher">
+                                        {{ evaluation.teacher_score }}
+                                    </span>
+                                </td>
+
+
+                                <!-- Final Marks -->
+                                <td>
+                                    <strong class="sv-subject-result-final">
+                                        {{ evaluation.final_mark }}
+                                    </strong>
+                                </td>
+
+
+                                <!-- Similarity -->
+                                <td>
+
+                                    <div class="sv-subject-result-similarity">
+
+                                        <div class="sv-subject-result-similarity-bar">
+                                            <span class="similarity-fill"
+                                                data-width="{{ evaluation.similarity_score }}"></span>
+                                        </div>
+                                        <span>
+                                            {{ evaluation.similarity_score }}%
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Status -->
+                                <td>
+
+                                    <span class="sv-subject-result-status">
+
+                                        <span class="sv-subject-result-status-dot"></span>
+
+                                        {{ evaluation.evaluation_status }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Evaluated On -->
+                                <td>
+                                    <span class="sv-subject-result-date">
+                                        {{ evaluation.evaluated_at }}
+                                    </span>
+                                </td>
+
+
+                                <!-- AI Feedback -->
+                                <td>
+
+                                    <a class="sv-subject-result-feedback"
+                                        href="{% url 'Student:Aifeedback' evaluation.evaluation_id %}">
+                                        <i class="fa-solid fa-comment-dots"></i>
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <!-- Empty State -->
+
+                <div class="sv-subject-result-empty">
+
+                    <div class="sv-subject-result-empty-icon">
+                        <i class="fa-solid fa-file-circle-xmark"></i>
+                    </div>
+
+                    <h4>No Evaluated Answers Found</h4>
+
+                    <p>
+                        Evaluation results for this subject will appear here
+                        once your answers have been evaluated.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Back -->
+                <div class="sv-subject-result-back">
+
+                    <a href="{% url 'Student:ViewResult' %}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Results
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    document.querySelectorAll('.similarity-fill').forEach(function (bar) {
+        bar.style.width = bar.dataset.width + '%';
+    });
+</script>
+
+{% endblock %}

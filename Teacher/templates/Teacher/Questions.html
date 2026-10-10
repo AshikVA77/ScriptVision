@@ -1,0 +1,305 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Questions</title>
+</head>
+
+<style>
+    /* =================================
+   Questions & Model Answers
+================================= */
+
+    .sv-questions-page {
+        min-height: 75vh;
+        padding: 80px 20px;
+    }
+
+    .sv-questions-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+
+    /* Header */
+
+    .sv-questions-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-questions-header h2 {
+        margin: 0 0 10px;
+        color: var(--tx);
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .sv-questions-header p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.95rem;
+    }
+
+
+    /* Card */
+
+    .sv-questions-card {
+        background: var(--bg3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    }
+
+
+    /* Title */
+
+    .sv-questions-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .sv-questions-title>i {
+        margin-top: 3px;
+        color: var(--pur2);
+        font-size: 1.2rem;
+    }
+
+    .sv-questions-title h3 {
+        margin: 0 0 4px;
+        color: var(--tx);
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
+
+    .sv-questions-title p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+
+    /* Field */
+
+    .sv-questions-field {
+        margin-bottom: 25px;
+    }
+
+    .sv-questions-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx2);
+        font-size: 0.88rem;
+        font-weight: 500;
+    }
+
+    .sv-questions-field select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-size: 0.92rem;
+        outline: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-questions-field select:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+    .sv-questions-field select option {
+        background: var(--bg3);
+        color: var(--tx);
+    }
+
+
+    /* Submit */
+
+    .sv-questions-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-questions-submit {
+        border: none;
+        padding: 11px 23px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-questions-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+    }
+
+
+    /* Back */
+
+    .sv-questions-back {
+        display: flex;
+        justify-content: center;
+        margin-top: 25px;
+    }
+
+    .sv-questions-back a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--tx2);
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: 0.25s ease;
+    }
+
+    .sv-questions-back a:hover {
+        color: var(--pur2);
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+        .sv-questions-page {
+            padding: 50px 15px;
+        }
+
+        .sv-questions-header h2 {
+            font-size: 1.6rem;
+        }
+
+        .sv-questions-card {
+            padding: 25px 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .sv-questions-page {
+            padding: 40px 12px;
+        }
+
+        .sv-questions-card {
+            padding: 22px 15px;
+        }
+
+        .sv-questions-submit {
+            width: 100%;
+        }
+
+        .sv-questions-actions {
+            justify-content: stretch;
+        }
+    }
+</style>
+
+<body>
+
+    <center>
+
+        <div class="sv-questions-page">
+
+            <div class="sv-questions-container">
+
+                <div class="sv-questions-header">
+                    <h2>Questions & Model Answers</h2>
+                    <p>Select an exam to add or manage questions.</p>
+                </div>
+
+
+                <div class="sv-questions-card">
+
+                    <div class="sv-questions-title">
+                        <i class="fa-solid fa-file-circle-question"></i>
+
+                        <div>
+                            <h3>Select Exam</h3>
+                            <p>Choose an exam to continue.</p>
+                        </div>
+                    </div>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="sv-questions-field">
+
+                            <label for="exam">
+                                Exam
+                            </label>
+
+                            <select name="exam" id="exam" required>
+
+                                <option value="">
+                                    -- Select Exam --
+                                </option>
+
+                                {% for exam in exams %}
+
+                                <option value="{{ exam.exam_id }}">
+                                    {{ exam.exam_name }} -
+                                    {{ exam.subject.subject_name }}
+                                </option>
+
+                                {% empty %}
+
+                                <option value="">
+                                    No exams available
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="sv-questions-actions">
+
+                            <input type="submit" value="Continue" class="sv-questions-submit">
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <div class="sv-questions-back">
+
+                    <a href="{% url 'Teacher:Teacherhome' %}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </center>
+
+</body>
+
+</html>
+{% endblock %}

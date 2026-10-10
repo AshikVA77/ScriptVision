@@ -1,0 +1,518 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Evaluate Answer Script</title>
+
+    <style>
+        /* =========================================
+   Evaluate Answer Script
+========================================= */
+
+        .sv-evaluate-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 45px 20px 80px;
+            color: var(--tx);
+        }
+
+
+        /* =========================================
+   Page Header
+========================================= */
+
+        .sv-evaluate-header {
+            margin-bottom: 25px;
+        }
+
+        .sv-evaluate-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--tx);
+        }
+
+
+        /* =========================================
+   Exam Information
+========================================= */
+
+        .sv-evaluate-exam-info {
+            padding: 25px;
+            margin-bottom: 30px;
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+        }
+
+        .sv-evaluate-exam-info h2 {
+            margin: 0 0 20px;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--tx);
+        }
+
+        .sv-evaluate-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .sv-evaluate-details div {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--bd);
+            border-radius: 12px;
+        }
+
+        .sv-evaluate-details span {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: var(--tx3);
+        }
+
+        .sv-evaluate-details strong {
+            color: var(--tx);
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Evaluation List
+========================================= */
+
+        .sv-evaluations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+
+        /* =========================================
+   Evaluation Card
+========================================= */
+
+        .sv-evaluation-card {
+            padding: 25px;
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+
+        /* =========================================
+   Question
+========================================= */
+
+        .sv-evaluation-question {
+            display: inline-block;
+            margin-bottom: 22px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            color: var(--pur2);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Information Sections
+========================================= */
+
+        .sv-evaluation-info {
+            padding: 17px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--bd);
+            border-radius: 12px;
+        }
+
+        .sv-evaluation-info strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--tx);
+            font-size: 0.95rem;
+        }
+
+        .sv-evaluation-info p {
+            margin: 0;
+            color: var(--tx2);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+
+        /* =========================================
+   AI Marks
+========================================= */
+
+        .sv-ai-marks {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sv-ai-marks strong {
+            margin: 0;
+        }
+
+        .sv-ai-marks span {
+            color: var(--pur2);
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Similarity
+========================================= */
+
+        .sv-similarity {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sv-similarity strong {
+            margin: 0;
+        }
+
+        .sv-similarity span {
+            color: var(--pur2);
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   AI Feedback
+========================================= */
+
+        .sv-evaluation-feedback {
+            padding: 17px;
+            margin-bottom: 20px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+            border-radius: 12px;
+        }
+
+        .sv-evaluation-feedback strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--pur2);
+        }
+
+        .sv-evaluation-feedback p {
+            margin: 0;
+            color: var(--tx2);
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+   Teacher Mark
+========================================= */
+
+        .sv-teacher-mark {
+            padding-top: 20px;
+            border-top: 1px solid var(--bd);
+        }
+
+        .sv-teacher-mark>strong {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--tx);
+        }
+
+        .sv-teacher-mark-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sv-teacher-mark-input input {
+            width: 120px;
+            padding: 11px 13px;
+            background: var(--bg2);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            color: var(--tx);
+            outline: none;
+            font-size: 0.95rem;
+            transition: 0.2s ease;
+        }
+
+        .sv-teacher-mark-input input:focus {
+            border-color: var(--pur);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+        }
+
+        .sv-teacher-mark-input span {
+            color: var(--tx2);
+            font-weight: 500;
+        }
+
+
+        /* =========================================
+   Empty State
+========================================= */
+
+        .sv-evaluation-empty {
+            padding: 35px 20px;
+            text-align: center;
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 16px;
+        }
+
+        .sv-evaluation-empty p {
+            margin: 0;
+            color: var(--tx2);
+        }
+
+
+        /* =========================================
+   Save Button
+========================================= */
+
+        .sv-save-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .sv-save-button {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 10px;
+            background: var(--pur);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .sv-save-button:hover {
+            background: var(--pur2);
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+   Responsive
+========================================= */
+
+        @media (max-width: 768px) {
+
+            .sv-evaluate-container {
+                padding: 35px 15px 60px;
+            }
+
+            .sv-evaluate-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .sv-evaluate-exam-info {
+                padding: 20px;
+            }
+
+            .sv-evaluate-details {
+                grid-template-columns: 1fr;
+            }
+
+            .sv-evaluation-card {
+                padding: 20px;
+            }
+
+            .sv-save-wrapper {
+                justify-content: stretch;
+            }
+
+            .sv-save-button {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sv-evaluate-container">
+
+        <div class="sv-evaluate-header">
+            <h1>Evaluate Answer Script</h1>
+        </div>
+
+
+        <!-- Exam Information -->
+
+        <div class="sv-evaluate-exam-info">
+
+            <h2>
+                {{ stdexam.exam.exam_name }}
+            </h2>
+
+            <div class="sv-evaluate-details">
+
+                <div>
+                    <span>Student</span>
+                    <strong>{{ stdexam.student.student_name }}</strong>
+                </div>
+
+                <div>
+                    <span>Subject</span>
+                    <strong>{{ stdexam.exam.subject.subject_name }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Evaluation Form -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="sv-evaluations-list">
+
+                {% for evaluation in evaluations %}
+
+                <div class="sv-evaluation-card">
+
+                    <!-- Question -->
+
+                    <div class="sv-evaluation-question">
+                        Question {{ evaluation.question.question_number }}
+                    </div>
+
+
+                    <!-- Question Text -->
+
+                    <div class="sv-evaluation-info">
+
+                        <strong>Question:</strong>
+
+                        <p>
+                            {{ evaluation.question.question_text }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Student Answer -->
+
+                    <div class="sv-evaluation-info">
+
+                        <strong>Student Answer:</strong>
+
+                        <p>
+                            {{ evaluation.extracted_text }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- AI Marks -->
+
+                    <div class="sv-evaluation-info sv-ai-marks">
+
+                        <strong>AI Marks:</strong>
+
+                        <span>
+                            {{ evaluation.ai_score }}
+                            /
+                            {{ evaluation.question.maximum_marks }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- Similarity -->
+
+                    <div class="sv-evaluation-info sv-similarity">
+
+                        <strong>Similarity:</strong>
+
+                        <span>
+                            {{ evaluation.similarity_score }}%
+                        </span>
+
+                    </div>
+
+
+                    <!-- AI Feedback -->
+
+                    <div class="sv-evaluation-feedback">
+
+                        <strong>AI Feedback:</strong>
+
+                        <p>
+                            {{ evaluation.feedback }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Teacher Mark -->
+
+                    <div class="sv-teacher-mark">
+
+                        <strong>Teacher Mark:</strong>
+
+                        <div class="sv-teacher-mark-input">
+
+                            <input type="number" name="teacher_mark_{{ evaluation.evaluation_id }}" min="0"
+                                max="{{ evaluation.question.maximum_marks }}" step="0.5"
+                                value="{{ evaluation.teacher_score|default:'' }}">
+
+                            <span>
+                                / {{ evaluation.question.maximum_marks }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="sv-evaluation-empty">
+                    <p>No evaluations found.</p>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% if evaluations %}
+
+            <div class="sv-save-wrapper">
+
+                <button type="submit" class="sv-save-button">
+                    Save Teacher Marks
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

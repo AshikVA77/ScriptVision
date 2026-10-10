@@ -1,0 +1,974 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | ScriptVision</title>
+
+    <link rel="stylesheet" href="{% static 'Main/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Main/css/all.min.css' %}">
+
+    <style>
+        :root {
+            --bg: #08080d;
+            --bg2: #0d0d14;
+            --bg3: #11111a;
+            --card: rgba(20, 20, 31, .82);
+            --bd: rgba(255, 255, 255, .08);
+            --tx: #f5f5f7;
+            --tx2: #b7b7c5;
+            --tx3: #777787;
+            --pur: #8b5cf6;
+            --pur2: #a78bfa;
+            --pur3: #c4b5fd;
+            --glow: rgba(139, 92, 246, .22);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(124, 58, 237, .12), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(139, 92, 246, .10), transparent 32%),
+                var(--bg);
+            color: var(--tx);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Background glow */
+        .orb {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: .18;
+            pointer-events: none;
+        }
+
+        .orb.one {
+            background: #7c3aed;
+            top: -180px;
+            left: -150px;
+        }
+
+        .orb.two {
+            background: #4f46e5;
+            bottom: -200px;
+            right: -150px;
+        }
+
+        /* Main wrapper */
+        .register-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 55px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 850px;
+            background: linear-gradient(145deg,
+                    rgba(23, 23, 35, .92),
+                    rgba(12, 12, 19, .94));
+            border: 1px solid var(--bd);
+            border-radius: 26px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, .45),
+                0 0 70px rgba(124, 58, 237, .08);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .register-header {
+            text-align: center;
+            padding: 42px 35px 28px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--tx);
+            font-size: 1.15rem;
+            font-weight: 750;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: white;
+            box-shadow: 0 8px 28px rgba(139, 92, 246, .3);
+        }
+
+        .register-header h1 {
+            font-size: clamp(1.7rem, 4vw, 2.3rem);
+            font-weight: 750;
+            letter-spacing: -.04em;
+            margin-bottom: 10px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #a78bfa, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .register-header p {
+            color: var(--tx3);
+            font-size: .9rem;
+            margin: 0;
+        }
+
+        /* Role switch */
+        .role-switch {
+            width: min(430px, 100%);
+            margin: 28px auto 0;
+            padding: 5px;
+            display: flex;
+            background: rgba(255, 255, 255, .045);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .role-btn {
+            flex: 1;
+            border: 0;
+            background: transparent;
+            color: var(--tx3);
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: .86rem;
+            font-weight: 650;
+            cursor: pointer;
+            transition: .25s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .role-btn.active {
+            color: white;
+            background: linear-gradient(135deg,
+                    rgba(124, 58, 237, .9),
+                    rgba(139, 92, 246, .72));
+            box-shadow:
+                0 6px 20px rgba(124, 58, 237, .2),
+                inset 0 1px 0 rgba(255, 255, 255, .12);
+        }
+
+        .role-btn i {
+            margin-right: 7px;
+        }
+
+        /* Form */
+        .form-area {
+            padding: 10px 50px 45px;
+        }
+
+        .form-panel {
+            animation: fadeUp .35s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--tx2);
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            margin: 5px 0 20px;
+        }
+
+        .section-label::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: var(--bd);
+        }
+
+        .field {
+            margin-bottom: 19px;
+        }
+
+        .field label {
+            display: block;
+            color: var(--tx2);
+            font-size: .78rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--tx3);
+            font-size: .85rem;
+            pointer-events: none;
+            transition: .2s;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 47px;
+            border-radius: 11px;
+            border: 1px solid var(--bd);
+            background: rgba(255, 255, 255, .035);
+            color: var(--tx);
+            padding: 11px 14px 11px 42px;
+            font-size: .86rem;
+            transition: .25s ease;
+        }
+
+        .form-select {
+            padding-left: 42px;
+        }
+
+        .form-control::placeholder {
+            color: #5f5f6c;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(139, 92, 246, .045);
+            border-color: rgba(139, 92, 246, .65);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, .09);
+            color: var(--tx);
+        }
+
+        .form-control:focus+.input-icon {
+            color: var(--pur2);
+        }
+
+        .form-select option {
+            background: #15151f;
+            color: white;
+        }
+
+        /* File upload */
+        .file-box {
+            position: relative;
+            border: 1px dashed rgba(139, 92, 246, .35);
+            border-radius: 13px;
+            background: rgba(139, 92, 246, .035);
+            padding: 17px;
+            transition: .25s;
+        }
+
+        .file-box:hover {
+            border-color: rgba(139, 92, 246, .7);
+            background: rgba(139, 92, 246, .06);
+        }
+
+        .file-box input {
+            color: var(--tx2);
+            width: 100%;
+            font-size: .8rem;
+        }
+
+        .file-box small {
+            display: block;
+            color: var(--tx3);
+            margin-top: 7px;
+        }
+
+        /* Submit */
+        .register-btn {
+            width: 100%;
+            min-height: 50px;
+            border: 0;
+            border-radius: 12px;
+            color: white;
+            font-size: .9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            box-shadow: 0 12px 28px rgba(124, 58, 237, .23);
+            transition: .25s ease;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 35px rgba(124, 58, 237, .34);
+        }
+
+        .register-btn i {
+            margin-left: 7px;
+        }
+
+        /* Bottom */
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: var(--tx3);
+            font-size: .82rem;
+        }
+
+        .login-link a {
+            color: var(--pur2);
+            text-decoration: none;
+            font-weight: 650;
+        }
+
+        .login-link a:hover {
+            color: var(--pur3);
+        }
+
+        /* Error */
+        .error-box {
+            background: rgba(239, 68, 68, .08);
+            border: 1px solid rgba(239, 68, 68, .2);
+            color: #fca5a5;
+            border-radius: 11px;
+            padding: 11px 14px;
+            margin-bottom: 20px;
+            font-size: .82rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 767px) {
+
+            .register-wrapper {
+                padding: 25px 14px;
+                align-items: flex-start;
+            }
+
+            .register-card {
+                border-radius: 20px;
+            }
+
+            .register-header {
+                padding: 30px 20px 22px;
+            }
+
+            .form-area {
+                padding: 8px 22px 30px;
+            }
+
+            .register-header h1 {
+                font-size: 1.65rem;
+            }
+        }
+
+        .home-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .home-link a {
+            color: var(--tx3);
+            text-decoration: none;
+            font-size: .8rem;
+            transition: .2s ease;
+        }
+
+        .home-link a:hover {
+            color: var(--pur2);
+        }
+
+        .home-link i {
+            margin-right: 5px;
+            font-size: .7rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+    <main class="register-wrapper">
+
+        <div class="register-card">
+
+            <!-- HEADER -->
+            <div class="register-header">
+
+                <a href="{% url 'Guest:index' %}" class="brand">
+                    <span class="logo">
+                        <i class="fa-solid fa-file-pen"></i>
+                    </span>
+                    ScriptVision
+                </a>
+
+                <h1>
+                    Create your <span class="gradient-text">account</span>
+                </h1>
+
+                <p>
+                    Join ScriptVision and simplify handwritten answer evaluation.
+                </p>
+
+                <!-- ROLE SWITCH -->
+                <div class="role-switch">
+
+                    <button type="button" class="role-btn active" id="studentBtn" onclick="switchRole('student')">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        Student
+                    </button>
+
+                    <button type="button" class="role-btn" id="teacherBtn" onclick="switchRole('teacher')">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        Teacher
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM AREA -->
+            <div class="form-area">
+
+                {% if error %}
+                <div class="error-box">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                    {{ error }}
+                </div>
+                {% endif %}
+
+
+                <!-- STUDENT FORM -->
+                <div id="studentForm" class="form-panel">
+
+                    <div class="section-label">
+                        Student Information
+                    </div>
+
+                    <form method="POST" action="{% url 'Guest:Register' %}" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <input type="hidden" name="role" value="student">
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_name">
+                                        Full Name
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="text" class="form-control" id="student_name" name="sdname"
+                                            placeholder="Enter your full name"
+                                            title="Name Allows Only Alphabets, Spaces and First Letter Must Be Capital Letter"
+                                            pattern="^[A-Z]+[a-zA-Z ]*$" required>
+
+                                        <i class="fa-regular fa-user input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_email">
+                                        Email Address
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="email" class="form-control" id="student_email" name="sdemail"
+                                            placeholder="you@example.com"
+                                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+
+                                        <i class="fa-regular fa-envelope input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_phone">
+                                        Phone Number
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="tel" class="form-control" id="student_phone" name="sdphone"
+                                            placeholder="10 digit mobile number" pattern="[6-9]{1}[0-9]{9}"
+                                            title="Phone number must start with 6-9 and contain 10 digits" required>
+
+                                        <i class="fa-solid fa-phone input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_department">
+                                        Department
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <select class="form-select" id="student_department" name="sddepartment"
+                                            required>
+
+                                            <option value="" selected disabled>
+                                                Select Department
+                                            </option>
+
+                                            <option value="CS">
+                                                Computer Science
+                                            </option>
+
+                                            <option value="IT">
+                                                Information Technology
+                                            </option>
+
+                                            <option value="AI">
+                                                Artificial Intelligence
+                                            </option>
+
+                                            <option value="ECE">
+                                                Electronics and Communication
+                                            </option>
+
+                                            <option value="EEE">
+                                                Electrical and Electronics
+                                            </option>
+
+                                            <option value="ME">
+                                                Mechanical Engineering
+                                            </option>
+
+                                            <option value="CE">
+                                                Civil Engineering
+                                            </option>
+
+                                            <option value="Architecture">
+                                                Architecture
+                                            </option>
+
+                                            <option value="MCA">
+                                                Master of Computer Applications (MCA)
+                                            </option>
+
+                                            <option value="MBAs">
+                                                Master of Business Administration (MBA)
+                                            </option>
+
+                                        </select>
+
+                                        <i class="fa-solid fa-building-columns input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_password">
+                                        Password
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="password" class="form-control" id="student_password"
+                                            name="sdpassword" placeholder="Create a strong password"
+                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_+\-=\[\]{};':&quot;\\|,.*<>\/?]).{8,}"
+                                            required>
+
+                                        <i class="fa-solid fa-lock input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="student_confirm_password">
+                                        Confirm Password
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="password" class="form-control" id="student_confirm_password"
+                                            name="sdconfirm_password" placeholder="Confirm your password" required>
+
+                                        <i class="fa-solid fa-shield-halved input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <div class="field">
+
+                                    <label for="student_profile_pic">
+                                        Profile Picture
+                                    </label>
+
+                                    <div class="file-box">
+
+                                        <input type="file" id="student_profile_pic" name="sdprofile_pic"
+                                            accept="image/*">
+
+                                        <small>
+                                            <i class="fa-regular fa-image me-1"></i>
+                                            JPG, PNG or other supported image formats
+                                        </small>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="register-btn">
+                            Create Student Account
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- TEACHER FORM -->
+                <div id="teacherForm" class="form-panel" style="display:none">
+
+                    <div class="section-label">
+                        Teacher Information
+                    </div>
+
+                    <form method="POST" action="{% url 'Guest:Register' %}" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <input type="hidden" name="role" value="teacher">
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_name">
+                                        Full Name
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="text" class="form-control" id="teacher_name" name="thname"
+                                            placeholder="Enter your full name" required>
+
+                                        <i class="fa-regular fa-user input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_email">
+                                        Email Address
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="email" class="form-control" id="teacher_email" name="themail"
+                                            placeholder="you@example.com" required>
+
+                                        <i class="fa-regular fa-envelope input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_phone">
+                                        Phone Number
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="tel" class="form-control" id="teacher_phone" name="thphone"
+                                            placeholder="10 digit mobile number" pattern="[6-9]{1}[0-9]{9}"
+                                            title="Phone number must start with 6-9 and contain 10 digits" required>
+
+                                        <i class="fa-solid fa-phone input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_department">
+                                        Department
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <select class="form-select" id="teacher_department" name="thdepartment"
+                                            required>
+
+                                            <option value="" selected disabled>
+                                                Select Department
+                                            </option>
+
+                                            <option value="CS">
+                                                Computer Science
+                                            </option>
+
+                                            <option value="IT">
+                                                Information Technology
+                                            </option>
+
+                                            <option value="AI">
+                                                Artificial Intelligence
+                                            </option>
+
+                                            <option value="ECE">
+                                                Electronics and Communication
+                                            </option>
+
+                                            <option value="EEE">
+                                                Electrical and Electronics
+                                            </option>
+
+                                            <option value="ME">
+                                                Mechanical Engineering
+                                            </option>
+
+                                            <option value="CE">
+                                                Civil Engineering
+                                            </option>
+
+                                            <option value="Architecture">
+                                                Architecture
+                                            </option>
+
+                                            <option value="MCA">
+                                                Master of Computer Applications (MCA)
+                                            </option>
+
+                                            <option value="MBAs">
+                                                Master of Business Administration (MBA)
+                                            </option>
+
+                                        </select>
+
+                                        <i class="fa-solid fa-building-columns input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_password">
+                                        Password
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="password" class="form-control" id="teacher_password"
+                                            name="thpassword" placeholder="Create a strong password" required>
+
+                                        <i class="fa-solid fa-lock input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="field">
+
+                                    <label for="teacher_confirm_password">
+                                        Confirm Password
+                                    </label>
+
+                                    <div class="input-wrap">
+                                        <input type="password" class="form-control" id="teacher_confirm_password"
+                                            name="thconfirm_password" placeholder="Confirm your password" required>
+
+                                        <i class="fa-solid fa-shield-halved input-icon"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <div class="field">
+
+                                    <label for="teacher_profile_pic">
+                                        Profile Picture
+                                    </label>
+
+                                    <div class="file-box">
+
+                                        <input type="file" id="teacher_profile_pic" name="thprofile_pic"
+                                            accept="image/*">
+
+                                        <small>
+                                            <i class="fa-regular fa-image me-1"></i>
+                                            JPG, PNG or other supported image formats
+                                        </small>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="register-btn">
+                            Create Teacher Account
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <div class="login-link">
+                    Already have an account?
+                    <a href="{% url 'Guest:Login' %}">Login here</a>
+                </div>
+
+                <div class="home-link">
+                    <a href="{% url 'Guest:index' %}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Home
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function switchRole(role) {
+
+            const studentForm = document.getElementById("studentForm");
+            const teacherForm = document.getElementById("teacherForm");
+
+            const studentBtn = document.getElementById("studentBtn");
+            const teacherBtn = document.getElementById("teacherBtn");
+
+            if (role === "student") {
+
+                studentForm.style.display = "block";
+                teacherForm.style.display = "none";
+
+                studentBtn.classList.add("active");
+                teacherBtn.classList.remove("active");
+
+            } else {
+
+                studentForm.style.display = "none";
+                teacherForm.style.display = "block";
+
+                teacherBtn.classList.add("active");
+                studentBtn.classList.remove("active");
+
+            }
+
+        }
+
+
+        /* Password confirmation */
+        document.addEventListener("submit", function (event) {
+
+            const form = event.target;
+
+            if (!form.matches("form")) {
+                return;
+            }
+
+            const role = form.querySelector('input[name="role"]').value;
+
+            let password;
+            let confirmPassword;
+
+            if (role === "student") {
+                password = document.getElementById("student_password").value;
+                confirmPassword = document.getElementById("student_confirm_password").value;
+            } else {
+                password = document.getElementById("teacher_password").value;
+                confirmPassword = document.getElementById("teacher_confirm_password").value;
+            }
+
+            if (password !== confirmPassword) {
+
+                event.preventDefault();
+
+                alert("Password and Confirm Password do not match.");
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

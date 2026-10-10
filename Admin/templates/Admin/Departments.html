@@ -1,0 +1,407 @@
+{% extends 'Admin/Header.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage Departments</title>
+</head>
+
+<style>
+    :root {
+        --sv-primary: #8b5cf6;
+        --sv-primary-light: rgba(139, 92, 246, 0.14);
+        --sv-blue: #477dff;
+        --sv-text: #f5f5f7;
+        --sv-muted: #b7b7c5;
+        --sv-border: rgba(255, 255, 255, 0.09);
+        --sv-surface: #11111a;
+        --sv-page: #08080d;
+    }
+
+    body {
+        background: var(--sv-page) !important;
+        color: var(--sv-text) !important;
+    }
+
+    #main {
+        background: var(--sv-page) !important;
+        padding: 30px 24px;
+    }
+
+    .page-title {
+        color: var(--sv-text);
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+        color: var(--sv-muted);
+        font-size: 14px;
+    }
+
+    .sv-back-btn,
+    .sv-add-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 17px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .sv-back-btn {
+        color: var(--sv-text);
+        background: var(--sv-surface);
+        border: 1px solid var(--sv-border);
+    }
+
+    .sv-back-btn:hover {
+        color: #fff;
+        border-color: var(--sv-primary);
+        background: var(--sv-primary-light);
+    }
+
+    .sv-add-btn {
+        color: #fff;
+        background: linear-gradient(135deg, var(--sv-primary), var(--sv-blue));
+        border: none;
+        box-shadow: 0 5px 18px rgba(139, 92, 246, 0.18);
+    }
+
+    .sv-add-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(139, 92, 246, 0.28);
+    }
+
+    .department-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin: 30px 0 18px;
+    }
+
+    .department-heading h5 {
+        color: var(--sv-text);
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .department-heading p {
+        color: var(--sv-muted);
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .department-card {
+        overflow: hidden;
+        background: var(--sv-surface);
+        border: 1px solid var(--sv-border);
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .department-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--sv-border);
+    }
+
+    .department-card-header>div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sv-text);
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .department-card-header>div i {
+        color: var(--sv-primary);
+        font-size: 19px;
+    }
+
+    .department-count {
+        color: var(--sv-primary-light);
+        background: rgba(139, 92, 246, 0.15);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .department-table {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--sv-text);
+        --bs-table-border-color: var(--sv-border);
+        --bs-table-hover-bg: rgba(139, 92, 246, 0.06);
+        --bs-table-hover-color: var(--sv-text);
+        color: var(--sv-text);
+        margin: 0;
+    }
+
+    .department-table thead th {
+        padding: 16px 24px;
+        color: var(--sv-muted);
+        background: rgba(255, 255, 255, 0.025);
+        border-bottom: 1px solid var(--sv-border);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        white-space: nowrap;
+    }
+
+    .department-table tbody td {
+        padding: 17px 24px;
+        color: var(--sv-text);
+        border-bottom: 1px solid var(--sv-border);
+        font-size: 14px;
+    }
+
+    .department-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .department-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .department-table tbody tr:hover {
+        background: rgba(139, 92, 246, 0.05);
+    }
+
+    .department-number {
+        color: var(--sv-muted) !important;
+        width: 70px;
+    }
+
+    .department-name {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+    }
+
+    .department-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        color: #bda5ff;
+        background: var(--sv-primary-light);
+        border: 1px solid rgba(139, 92, 246, 0.15);
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .department-code {
+        display: inline-block;
+        color: #a9c3ff;
+        background: rgba(71, 125, 255, 0.12);
+        border: 1px solid rgba(71, 125, 255, 0.2);
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 65px 20px;
+    }
+
+    .empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 75px;
+        height: 75px;
+        margin: 0 auto 20px;
+        color: var(--sv-primary);
+        background: var(--sv-primary-light);
+        border: 1px solid rgba(139, 92, 246, 0.18);
+        border-radius: 20px;
+        font-size: 30px;
+    }
+
+    .empty-state h5 {
+        color: var(--sv-text);
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        color: var(--sv-muted);
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    @media (max-width: 767px) {
+        #main {
+            padding: 22px 14px;
+        }
+
+        .page-title {
+            font-size: 22px;
+        }
+
+        .department-heading {
+            align-items: stretch;
+        }
+
+        .department-heading .sv-add-btn {
+            width: 100%;
+        }
+
+        .department-card-header {
+            padding: 17px;
+        }
+
+        .department-table thead th,
+        .department-table tbody td {
+            padding: 14px 16px;
+        }
+
+        .sv-back-btn {
+            width: 100%;
+        }
+    }
+
+    .department-card-header .department-count {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        padding: 6px 12px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        border-radius: 20px;
+        background: rgba(139, 92, 246, 0.15) !important;
+        color: #c4b5fd !important;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <div class="container-fluid">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <div>
+                    <h3 class="page-title mb-1">Manage Departments</h3>
+                    <p class="page-subtitle mb-0">
+                        View and manage academic departments in ScriptVision.
+                    </p>
+                </div>
+
+                <a href="{% url 'Admin:Adminhome' %}" class="sv-back-btn">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+
+            <div class="department-heading">
+                <div>
+                    <h5>All Departments</h5>
+                    <p>Manage the departments registered in the system.</p>
+                </div>
+
+                <a href="{% url 'Admin:AddDepartment' %}" class="sv-add-btn">
+                    <i class="bi bi-plus"></i>
+                    Add Department
+                </a>
+            </div>
+
+            <div class="department-card">
+                <div class="department-card-header">
+                    <div>
+                        <i class="bi bi-building"></i>
+                        Department List
+                    </div>
+
+                    <span class="department-count">
+                        {{ departments|length }} department{{ departments|length|pluralize }}
+                    </span>
+                </div>
+
+                {% if departments %}
+                <div class="table-responsive">
+                    <table class="table department-table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Department Name</th>
+                                <th>Department Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for department in departments %}
+                            <tr>
+                                <td class="department-number">
+                                    {{ forloop.counter }}
+                                </td>
+
+                                <td>
+                                    <div class="department-name">
+                                        <div class="department-icon">
+                                            <i class="bi bi-building"></i>
+                                        </div>
+                                        <span>{{ department.dept_name }}</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="department-code">
+                                        {{ department.dept_code }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                    <h5>No Departments Yet</h5>
+                    <p>Add your first department to get started.</p>
+
+                    <a href="{% url 'Admin:AddDepartment' %}" class="sv-add-btn">
+                        <i class="bi bi-plus-lg"></i>
+                        Add First Department
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+
+</html>
+{% endblock %}

@@ -1,0 +1,411 @@
+{% extends 'Admin/Header.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage Subjects</title>
+</head>
+
+<style>
+    #main {
+        min-height: 100vh;
+        padding: 40px 24px;
+        background:
+            radial-gradient(ellipse at 10% 0%, rgba(139, 92, 246, .09), transparent 38%),
+            #08080d;
+        color: #f5f5f7;
+    }
+
+    .subjects-container {
+        max-width: 1150px;
+        margin: 0 auto;
+    }
+
+    .subjects-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+    }
+
+    .page-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(139, 92, 246, .23);
+        border-radius: 30px;
+        background: rgba(139, 92, 246, .09);
+        color: #bda5ff;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .subjects-header h3 {
+        margin-bottom: 8px;
+        color: #f5f5f7;
+        font-size: 29px;
+        font-weight: 750;
+        letter-spacing: -.6px;
+    }
+
+    .subjects-header p {
+        margin: 0;
+        color: #9292a5;
+        font-size: 13px;
+    }
+
+    .add-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(110deg, #8b5cf6, #477dff);
+        box-shadow: 0 7px 20px rgba(108, 83, 235, .18);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .add-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(108, 83, 235, .3);
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+        color: #a7a7b8;
+        font-size: 13px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+    .back-link:hover {
+        color: #c4b5fd;
+    }
+
+    .subjects-card {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 16px;
+        background: #11111a;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, .18);
+    }
+
+    .card-header-custom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 21px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .card-header-custom>div {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: #f5f5f7;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .card-header-custom>div i {
+        color: #a78bfa;
+        font-size: 20px;
+    }
+
+    .subject-count {
+        padding: 6px 12px;
+        border: 1px solid rgba(139, 92, 246, .22);
+        border-radius: 30px;
+        background: rgba(139, 92, 246, .10);
+        color: #c4b5fd;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .subjects-table {
+        --bs-table-bg: transparent;
+        --bs-table-color: #f5f5f7;
+        --bs-table-border-color: rgba(255, 255, 255, .07);
+        --bs-table-hover-bg: rgba(139, 92, 246, .045);
+        --bs-table-hover-color: #f5f5f7;
+        color: #f5f5f7;
+    }
+
+    .subjects-table thead th {
+        padding: 16px 23px;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+        background: rgba(255, 255, 255, .025);
+        color: #9292a5;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .subjects-table tbody td {
+        padding: 17px 23px;
+        border-bottom: 1px solid rgba(255, 255, 255, .06);
+        color: #e5e5ed;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .subjects-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .subjects-table tbody tr {
+        transition: background .2s;
+    }
+
+    .subjects-table tbody tr:hover {
+        background: rgba(139, 92, 246, .045);
+    }
+
+    .row-number {
+        width: 60px;
+        color: #77778b !important;
+    }
+
+    .subject-name {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+    }
+
+    .subject-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 39px;
+        height: 39px;
+        flex-shrink: 0;
+        border: 1px solid rgba(139, 92, 246, .17);
+        border-radius: 11px;
+        background: rgba(139, 92, 246, .12);
+        color: #bda5ff;
+        font-size: 17px;
+    }
+
+    .subject-code {
+        display: inline-block;
+        padding: 6px 10px;
+        border: 1px solid rgba(71, 125, 255, .20);
+        border-radius: 6px;
+        background: rgba(71, 125, 255, .10);
+        color: #a9c3ff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+    .department-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #b7b7c5;
+        font-size: 12px;
+    }
+
+    .department-label i {
+        color: #a78bfa;
+        font-size: 15px;
+    }
+
+    .empty-state {
+        padding: 65px 20px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border: 1px solid rgba(139, 92, 246, .2);
+        border-radius: 20px;
+        background: rgba(139, 92, 246, .12);
+        color: #bda5ff;
+        font-size: 29px;
+    }
+
+    .empty-state h5 {
+        margin-bottom: 9px;
+        color: #f5f5f7;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .empty-state p {
+        margin-bottom: 22px;
+        color: #9292a5;
+        font-size: 13px;
+    }
+
+    .subjects-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 25px;
+        color: #77778b;
+        font-size: 11px;
+    }
+
+    .subjects-footer i {
+        color: #a78bfa;
+    }
+
+    .subjects-footer span {
+        color: #477dff;
+    }
+
+    @media (max-width: 768px) {
+        #main {
+            padding: 25px 14px;
+        }
+
+        .subjects-header h3 {
+            font-size: 25px;
+        }
+
+        .subjects-header .add-btn {
+            width: 100%;
+        }
+
+        .card-header-custom {
+            padding: 18px;
+        }
+
+        .subjects-table thead th,
+        .subjects-table tbody td {
+            padding: 14px 16px;
+        }
+    }
+</style>
+
+<body>
+    <div id="main">
+        <div class="subjects-container">
+
+            <div class="subjects-header">
+                <div>
+                    <span class="page-badge">
+                        <i class="bi bi-mortarboard"></i> ACADEMIC MANAGEMENT
+                    </span>
+                    <h3>Manage Subjects</h3>
+                    <p>Organize subjects and their departments in ScriptVision.</p>
+                </div>
+
+                <a href="{% url 'Admin:AddSubject' %}" class="add-btn">
+                    <i class="bi bi-plus-lg"></i> Add Subject
+                </a>
+            </div>
+
+            <a href="{% url 'Admin:Adminhome' %}" class="back-link">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+
+            <div class="subjects-card">
+                <div class="card-header-custom">
+                    <div>
+                        <i class="bi bi-journal-bookmark"></i>
+                        <span>Subject Directory</span>
+                    </div>
+                    <span class="subject-count">
+                        {{ subjects|length }} Subject{{ subjects|length|pluralize }}
+                    </span>
+                </div>
+
+                {% if subjects %}
+                <div class="table-responsive">
+                    <table class="table subjects-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Subject Details</th>
+                                <th>Subject Code</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for subject in subjects %}
+                            <tr>
+                                <td class="row-number">{{ forloop.counter }}</td>
+
+                                <td>
+                                    <div class="subject-name">
+                                        <div class="subject-icon">
+                                            <i class="bi bi-book-half"></i>
+                                        </div>
+                                        <span>{{ subject.subject_name }}</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="subject-code">
+                                        {{ subject.subject_code }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="department-label">
+                                        <i class="bi bi-building"></i>
+                                        {{ subject.subject_department.dept_name }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-journal-x"></i>
+                    </div>
+                    <h5>No Subjects Added Yet</h5>
+                    <p>Start by adding the first subject to your directory.</p>
+                    <a href="{% url 'Admin:AddSubject' %}" class="add-btn">
+                        <i class="bi bi-plus-lg"></i> Add First Subject
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="subjects-footer">
+                <i class="bi bi-shield-check"></i>
+                ScriptVision <span>·</span> Academic Management
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

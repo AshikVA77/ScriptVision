@@ -1,0 +1,349 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Exam Results</title>
+
+    <style>
+        /* =================================
+   Exam Results
+================================= */
+
+        .sv-exam-results-page {
+            min-height: 75vh;
+            padding: 80px 20px;
+        }
+
+        .sv-exam-results-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+
+        /* Header */
+
+        .sv-exam-results-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-exam-results-header h1 {
+            margin: 0 0 10px;
+            color: var(--tx);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .sv-exam-results-header p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.95rem;
+        }
+
+
+        /* Exam Card */
+
+        .sv-exam-results-card {
+            padding: 25px;
+            margin-bottom: 18px;
+            background: var(--bg3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+            transition: 0.25s ease;
+        }
+
+        .sv-exam-results-card:hover {
+            border-color: rgba(139, 92, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+
+        /* Card Header */
+
+        .sv-exam-results-card-header {
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .sv-exam-results-card-header h2 {
+            margin: 0;
+            color: var(--tx);
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+
+        /* Exam Information */
+
+        .sv-exam-results-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .sv-exam-results-info>div {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 11px;
+        }
+
+        .sv-exam-results-info span {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--tx3);
+            font-size: 0.75rem;
+        }
+
+        .sv-exam-results-info strong {
+            color: var(--tx2);
+            font-size: 0.88rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+
+        /* View Results Button */
+
+        .sv-exam-results-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--pur), #7c3aed);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .sv-exam-results-button:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+        }
+
+        .sv-exam-results-button i {
+            font-size: 0.75rem;
+        }
+
+
+        /* Empty State */
+
+        .sv-exam-results-empty {
+            padding: 55px 20px;
+            text-align: center;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .sv-exam-results-empty-icon {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--pur2);
+            font-size: 1.4rem;
+        }
+
+        .sv-exam-results-empty h3 {
+            margin: 0 0 7px;
+            color: var(--tx);
+            font-size: 1rem;
+        }
+
+        .sv-exam-results-empty p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.85rem;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .sv-exam-results-page {
+                padding: 50px 15px;
+            }
+
+            .sv-exam-results-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .sv-exam-results-card {
+                padding: 20px;
+            }
+
+            .sv-exam-results-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .sv-exam-results-page {
+                padding: 40px 12px;
+            }
+
+            .sv-exam-results-card {
+                padding: 17px;
+            }
+
+            .sv-exam-results-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .sv-exam-results-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .sv-exam-results-actions form {
+            margin: 0;
+        }
+
+        .sv-publish-results-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: 1px solid #8b5cf6;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #8b5cf6, #477dff);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .sv-publish-results-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 576px) {
+            .sv-exam-results-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sv-exam-results-actions a,
+            .sv-exam-results-actions form,
+            .sv-publish-results-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sv-exam-results-page">
+
+        <div class="sv-exam-results-container">
+
+            <div class="sv-exam-results-header">
+                <h1>Exam Results</h1>
+                <p>View and publish the results of your examinations.</p>
+            </div>
+
+            {% for exam in exams %}
+
+            <div class="sv-exam-results-card">
+
+                <div class="sv-exam-results-card-header">
+                    <h2>{{ exam.exam_name }}</h2>
+                </div>
+
+                <div class="sv-exam-results-info">
+
+                    <div>
+                        <span>Subject</span>
+                        <strong>{{ exam.subject.subject_name }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Exam Type</span>
+                        <strong>{{ exam.exam_type }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Exam Date</span>
+                        <strong>{{ exam.exam_date }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Academic Year</span>
+                        <strong>{{ exam.academic_year }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Total Marks</span>
+                        <strong>{{ exam.total_marks }}</strong>
+                    </div>
+
+                </div>
+
+                <div class="sv-exam-results-actions">
+
+                    <a href="{% url 'Teacher:ExamStudents' exam.exam_id %}" class="sv-exam-results-button">
+                        View Results
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <form method="post" action="{% url 'Teacher:PublishExamResults' exam.exam_id %}"
+                        onsubmit="return confirm('Publish or republish these results and notify students by email?');">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="sv-publish-results-button">
+                            <i class="fa-solid fa-envelope"></i>
+                            Publish / Republish
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="sv-exam-results-empty">
+                <div class="sv-exam-results-empty-icon">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+
+                <h3>No Exams Found</h3>
+                <p>No exams are available to display.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</body>
+
+</html>
+{% endblock %}

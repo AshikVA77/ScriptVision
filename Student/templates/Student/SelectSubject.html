@@ -1,0 +1,717 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Select Subject</title>
+</head>
+
+<style>
+    /* =========================================
+   ScriptVision - Select Subject
+   All classes use sv-subject- prefix
+   ========================================= */
+
+    .sv-subject-page {
+        min-height: calc(100vh - 80px);
+        padding: 100px 20px 80px;
+        background: var(--bg);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sv-subject-glow {
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        filter: blur(110px);
+        pointer-events: none;
+    }
+
+    .sv-subject-glow-one {
+        top: 30px;
+        left: -180px;
+        background: rgba(139, 92, 246, 0.10);
+    }
+
+    .sv-subject-glow-two {
+        right: -180px;
+        bottom: -150px;
+        background: rgba(139, 92, 246, 0.08);
+    }
+
+
+    /* =========================================
+   Wrapper
+   ========================================= */
+
+    .sv-subject-wrapper {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+
+    /* =========================================
+   Heading
+   ========================================= */
+
+    .sv-subject-heading {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-subject-label {
+        display: inline-block;
+        color: var(--pur2);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 9px;
+    }
+
+    .sv-subject-heading h2 {
+        margin: 0;
+        color: var(--tx);
+        font-size: clamp(2rem, 4vw, 2.7rem);
+        font-weight: 700;
+    }
+
+    .sv-subject-heading p {
+        margin: 10px auto 0;
+        max-width: 580px;
+        color: var(--tx2);
+        font-size: 0.95rem;
+    }
+
+
+    /* =========================================
+   Error
+   ========================================= */
+
+    .sv-subject-error {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding: 13px 16px;
+        border-radius: 11px;
+        border: 1px solid rgba(248, 113, 113, 0.22);
+        background: rgba(248, 113, 113, 0.06);
+        color: #fca5a5;
+        font-size: 0.85rem;
+    }
+
+
+    /* =========================================
+   Main Select Card
+   ========================================= */
+
+    .sv-subject-card,
+    .sv-subject-selected-card {
+        background: rgba(17, 17, 26, 0.84);
+        border: 1px solid rgba(139, 92, 246, 0.18);
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.28),
+            0 0 40px rgba(139, 92, 246, 0.04);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =========================================
+   Card Heading
+   ========================================= */
+
+    .sv-subject-card-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .sv-subject-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(139, 92, 246, 0.10);
+        border: 1px solid rgba(139, 92, 246, 0.20);
+        color: var(--pur2);
+        font-size: 1.1rem;
+    }
+
+    .sv-subject-card-title h3 {
+        margin: 0 0 4px;
+        color: var(--tx);
+        font-size: 1.1rem;
+        font-weight: 650;
+    }
+
+    .sv-subject-card-title p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.8rem;
+    }
+
+
+    /* =========================================
+   Form
+   ========================================= */
+
+    .sv-subject-form {
+        display: flex;
+        align-items: flex-end;
+        gap: 14px;
+    }
+
+    .sv-subject-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx);
+        font-size: 0.83rem;
+        font-weight: 600;
+    }
+
+
+    /* =========================================
+   Select
+   ========================================= */
+
+    .sv-subject-form select {
+        flex: 1;
+        width: 100%;
+        height: 48px;
+        padding: 0 15px;
+        border-radius: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--tx);
+        font-size: 0.88rem;
+        outline: none;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-subject-form select:focus {
+        border-color: rgba(139, 92, 246, 0.55);
+        background: rgba(139, 92, 246, 0.045);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+    }
+
+    .sv-subject-form select option {
+        background: #11111a;
+        color: #f5f5f7;
+    }
+
+
+    /* =========================================
+   Enroll Button
+   ========================================= */
+
+    .sv-subject-enroll {
+        height: 48px;
+        min-width: 120px;
+        padding: 0 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid rgba(167, 139, 250, 0.35);
+        border-radius: 11px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.18);
+        transition: 0.25s ease;
+    }
+
+    .sv-subject-enroll:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.28);
+    }
+
+
+    /* =========================================
+   Selected Subjects Card
+   ========================================= */
+
+    .sv-subject-selected-card {
+        margin-top: 24px;
+    }
+
+    .sv-subject-selected-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+    }
+
+    .sv-subject-selected-heading h3 {
+        margin: 0;
+        color: var(--tx);
+        font-size: 1.25rem;
+        font-weight: 650;
+    }
+
+    .sv-subject-count {
+        padding: 6px 11px;
+        border-radius: 999px;
+        background: rgba(139, 92, 246, 0.08);
+        border: 1px solid rgba(139, 92, 246, 0.16);
+        color: var(--pur2);
+        font-size: 0.72rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================
+   Table
+   ========================================= */
+
+    .sv-subject-table-wrap {
+        overflow-x: auto;
+    }
+
+    .sv-subject-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .sv-subject-table th {
+        padding: 13px 15px;
+        text-align: left;
+        color: var(--tx3);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-subject-table td {
+        padding: 16px 15px;
+        color: var(--tx2);
+        font-size: 0.85rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sv-subject-table tbody tr {
+        transition: 0.2s ease;
+    }
+
+    .sv-subject-table tbody tr:hover {
+        background: rgba(139, 92, 246, 0.035);
+    }
+
+    .sv-subject-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* =========================================
+   Subject Name
+   ========================================= */
+
+    .sv-subject-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--tx);
+        font-weight: 550;
+    }
+
+    .sv-subject-row-icon {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(139, 92, 246, 0.08);
+        color: var(--pur2);
+        font-size: 0.72rem;
+    }
+
+
+    /* =========================================
+   Subject Code
+   ========================================= */
+
+    .sv-subject-code {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--tx2);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+
+    /* =========================================
+   Status
+   ========================================= */
+
+    .sv-subject-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--tx3);
+        font-size: 0.72rem;
+        font-weight: 600;
+    }
+
+    .sv-subject-status span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--tx3);
+    }
+
+    .sv-subject-status.active {
+        background: rgba(52, 211, 153, 0.08);
+        color: #6ee7b7;
+    }
+
+    .sv-subject-status.active span {
+        background: #34d399;
+    }
+
+
+    /* =========================================
+   Empty State
+   ========================================= */
+
+    .sv-subject-empty {
+        text-align: center;
+        padding: 45px 20px;
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+    }
+
+    .sv-subject-empty-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: rgba(139, 92, 246, 0.08);
+        color: var(--pur2);
+        font-size: 1.1rem;
+    }
+
+    .sv-subject-empty h4 {
+        margin: 0 0 7px;
+        color: var(--tx);
+        font-size: 1rem;
+    }
+
+    .sv-subject-empty p {
+        max-width: 420px;
+        margin: 0 auto;
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+
+    /* =========================================
+   Back Button
+   ========================================= */
+
+    .sv-subject-back {
+        margin-top: 25px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-subject-back a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--tx2) !important;
+        text-decoration: none !important;
+        font-size: 0.82rem;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .sv-subject-back a:hover {
+        color: var(--pur2) !important;
+    }
+
+
+    /* =========================================
+   Mobile
+   ========================================= */
+
+    @media (max-width: 650px) {
+
+        .sv-subject-page {
+            padding: 90px 15px 60px;
+        }
+
+        .sv-subject-card,
+        .sv-subject-selected-card {
+            padding: 22px;
+            border-radius: 18px;
+        }
+
+        .sv-subject-form {
+            display: block;
+        }
+
+        .sv-subject-form select {
+            margin-bottom: 12px;
+        }
+
+        .sv-subject-enroll {
+            width: 100%;
+        }
+
+        .sv-subject-selected-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sv-subject-table {
+            min-width: 650px;
+        }
+
+        .sv-subject-table-wrap {
+            margin: 0 -5px;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="sv-subject-page">
+
+        <div class="sv-subject-glow sv-subject-glow-one"></div>
+        <div class="sv-subject-glow sv-subject-glow-two"></div>
+
+        <div class="sv-subject-wrapper">
+
+            <!-- Heading -->
+            <div class="sv-subject-heading">
+                <span class="sv-subject-label">Student Enrollment</span>
+
+                <h2>Select Subject</h2>
+
+                <p>
+                    Select the subject you are enrolled in to access your exams and results.
+                </p>
+            </div>
+
+
+            <!-- Error -->
+            {% if error %}
+            <div class="sv-subject-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+
+            <!-- Select Subject Card -->
+            <div class="sv-subject-card">
+
+                <div class="sv-subject-card-title">
+                    <div class="sv-subject-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div>
+                        <h3>Enroll in a Subject</h3>
+                        <p>Choose a subject from the list below.</p>
+                    </div>
+                </div>
+
+
+                <form method="POST" class="sv-subject-form">
+
+                    {% csrf_token %}
+
+                    <label for="svSubject">
+                        Select Subject
+                    </label>
+
+                    <select name="subject" id="svSubject" required>
+                        <option value="">
+                            -- Select Subject --
+                        </option>
+
+                        {% for subject in subjects %}
+
+                        <option value="{{ subject.subject_id }}">
+                            {{ subject.subject_name }} - {{ subject.subject_code }}
+                        </option>
+
+                        {% empty %}
+
+                        <option value="">
+                            No subjects available
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <button type="submit" class="sv-subject-enroll">
+                        <i class="fa-solid fa-plus"></i>
+                        Enroll
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Selected Subjects -->
+            <div class="sv-subject-selected-card">
+
+                <div class="sv-subject-selected-heading">
+
+                    <div>
+                        <span class="sv-subject-label">My Enrollment</span>
+                        <h3>Your Selected Subjects</h3>
+                    </div>
+
+                    {% if enrolled_subjects %}
+                    <span class="sv-subject-count">
+                        {{ enrolled_subjects|length }}
+                        Subject{{ enrolled_subjects|length|pluralize }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if enrolled_subjects %}
+
+                <div class="sv-subject-table-wrap">
+
+                    <table class="sv-subject-table">
+
+                        <thead>
+                            <tr>
+                                <th>Subject Name</th>
+                                <th>Subject Code</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for enrollment in enrolled_subjects %}
+
+                            <tr>
+
+                                <td>
+                                    <div class="sv-subject-name">
+                                        <span class="sv-subject-row-icon">
+                                            <i class="fa-solid fa-book"></i>
+                                        </span>
+
+                                        {{ enrollment.subject.subject_name }}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="sv-subject-code">
+                                        {{ enrollment.subject.subject_code }}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    {% if enrollment.status == "Active" %}
+                                    <span class="sv-subject-status active">
+                                        <span></span>
+                                        {{ enrollment.status }}
+                                    </span>
+                                    {% else %}
+                                    <span class="sv-subject-status">
+                                        <span></span>
+                                        {{ enrollment.status }}
+                                    </span>
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <div class="sv-subject-empty">
+
+                    <div class="sv-subject-empty-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <h4>No Subjects Selected</h4>
+
+                    <p>
+                        You have not selected any subjects yet.
+                        Choose a subject above to enroll.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Back -->
+                <div class="sv-subject-back">
+
+                    <a href="{% url 'Student:Studenthome' %}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+{% endblock %}

@@ -1,0 +1,328 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Upload Answer Script</title>
+</head>
+
+<style>
+    /* =================================
+   Upload Answer Script
+================================= */
+
+    .sv-upload-script-page {
+        min-height: 75vh;
+        padding: 80px 20px;
+    }
+
+    .sv-upload-script-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+
+    /* Header */
+
+    .sv-upload-script-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-upload-script-header h2 {
+        margin: 0 0 10px;
+        color: var(--tx);
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .sv-upload-script-header p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.95rem;
+    }
+
+
+    /* Card */
+
+    .sv-upload-script-card {
+        background: var(--bg3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    }
+
+
+    /* Title */
+
+    .sv-upload-script-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .sv-upload-script-title>i {
+        margin-top: 3px;
+        color: var(--pur2);
+        font-size: 1.2rem;
+    }
+
+    .sv-upload-script-title h3 {
+        margin: 0 0 4px;
+        color: var(--tx);
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
+
+    .sv-upload-script-title p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+
+    /* Error */
+
+    .sv-upload-script-error {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding: 13px 15px;
+        border-radius: 10px;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        font-size: 0.88rem;
+    }
+
+    .sv-upload-script-error i {
+        color: #f87171;
+    }
+
+
+    /* Field */
+
+    .sv-upload-script-field {
+        margin-bottom: 25px;
+    }
+
+    .sv-upload-script-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx2);
+        font-size: 0.88rem;
+        font-weight: 500;
+    }
+
+    .sv-upload-script-field select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-size: 0.92rem;
+        outline: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-upload-script-field select:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+    .sv-upload-script-field select option {
+        background: var(--bg3);
+        color: var(--tx);
+    }
+
+
+    /* Submit */
+
+    .sv-upload-script-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-upload-script-submit {
+        border: none;
+        padding: 11px 23px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-upload-script-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+    }
+
+
+    /* Back */
+
+    .sv-upload-script-back {
+        display: flex;
+        justify-content: center;
+        margin-top: 25px;
+    }
+
+    .sv-upload-script-back a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--tx2);
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: 0.25s ease;
+    }
+
+    .sv-upload-script-back a:hover {
+        color: var(--pur2);
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+        .sv-upload-script-page {
+            padding: 50px 15px;
+        }
+
+        .sv-upload-script-header h2 {
+            font-size: 1.6rem;
+        }
+
+        .sv-upload-script-card {
+            padding: 25px 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .sv-upload-script-page {
+            padding: 40px 12px;
+        }
+
+        .sv-upload-script-card {
+            padding: 22px 15px;
+        }
+
+        .sv-upload-script-actions {
+            justify-content: stretch;
+        }
+
+        .sv-upload-script-submit {
+            width: 100%;
+        }
+    }
+</style>
+
+<body>
+    <div class="sv-upload-script-page">
+
+        <div class="sv-upload-script-container">
+
+            <div class="sv-upload-script-header">
+                <h2>Upload Answer Script</h2>
+                <p>Select the exam first to continue with answer script upload.</p>
+            </div>
+
+
+            <div class="sv-upload-script-card">
+
+                <div class="sv-upload-script-title">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+
+                    <div>
+                        <h3>Select Exam</h3>
+                        <p>Choose the exam for which you want to upload answer scripts.</p>
+                    </div>
+                </div>
+
+
+                {% if error %}
+                <div class="sv-upload-script-error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="sv-upload-script-field">
+
+                        <label for="exam">
+                            Select Exam
+                        </label>
+
+                        <select name="exam" id="exam" required>
+
+                            <option value="">
+                                -- Select Exam --
+                            </option>
+
+                            {% for exam in exams %}
+
+                            <option value="{{ exam.exam_id }}">
+                                {{ exam.exam_name }} -
+                                {{ exam.subject.subject_name }}
+                            </option>
+
+                            {% empty %}
+
+                            <option value="" disabled>
+                                No exams available
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="sv-upload-script-actions">
+
+                        <input type="submit" value="Continue" class="sv-upload-script-submit">
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="sv-upload-script-back">
+
+                <a href="{% url 'Teacher:Teacherhome' %}">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,265 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Exam Students</title>
+
+    <style>
+        /* ================================
+   Exam Students Page
+================================ */
+
+        .sv-exam-students-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+            color: var(--tx);
+        }
+
+        /* Exam Header */
+
+        .sv-exam-students-header {
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .sv-exam-students-header h1 {
+            margin: 0 0 25px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--tx);
+        }
+
+        .sv-exam-students-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .sv-exam-students-info p {
+            margin: 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--bd);
+            border-radius: 12px;
+            color: var(--tx2);
+            font-size: 0.95rem;
+        }
+
+        .sv-exam-students-info strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--tx);
+        }
+
+        /* Students Heading */
+
+        .sv-exam-students-title {
+            margin: 0 0 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--tx);
+        }
+
+        /* Student List */
+
+        .sv-students-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Student Card */
+
+        .sv-student-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 22px 25px;
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 16px;
+            transition: 0.25s ease;
+        }
+
+        .sv-student-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.45);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Student Info */
+
+        .sv-student-info {
+            color: var(--tx2);
+            line-height: 1.7;
+        }
+
+        .sv-student-name {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+            color: var(--tx);
+        }
+
+        .sv-student-detail {
+            display: inline-block;
+            margin-right: 25px;
+            font-size: 0.9rem;
+        }
+
+        .sv-student-detail span {
+            margin-right: 5px;
+            color: var(--tx3);
+        }
+
+        /* Evaluate Button */
+
+        .sv-evaluate-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 110px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: var(--pur);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .sv-evaluate-button:hover {
+            background: var(--pur2);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* Empty State */
+
+        .sv-no-students {
+            padding: 35px 20px;
+            text-align: center;
+            background: rgba(17, 17, 26, 0.75);
+            border: 1px solid var(--bd);
+            border-radius: 16px;
+        }
+
+        .sv-no-students p {
+            margin: 0;
+            color: var(--tx2);
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .sv-exam-students-container {
+                padding: 35px 15px 60px;
+            }
+
+            .sv-exam-students-header {
+                padding: 22px;
+            }
+
+            .sv-exam-students-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .sv-exam-students-info {
+                grid-template-columns: 1fr;
+            }
+
+            .sv-student-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .sv-evaluate-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sv-exam-students-container">
+
+        <div class="sv-exam-students-header">
+            <h1>{{ exam.exam_name }}</h1>
+
+            <div class="sv-exam-students-info">
+                <p>
+                    <strong>Subject:</strong>
+                    {{ exam.subject.subject_name }}
+                </p>
+
+                <p>
+                    <strong>Exam Date:</strong>
+                    {{ exam.exam_date }}
+                </p>
+
+                <p>
+                    <strong>Total Marks:</strong>
+                    {{ exam.total_marks }}
+                </p>
+            </div>
+        </div>
+
+        <h2 class="sv-exam-students-title">Students</h2>
+
+        <div class="sv-students-list">
+
+            {% for item in students %}
+
+            <div class="sv-student-card">
+
+                <div class="sv-student-info">
+
+                    <strong class="sv-student-name">
+                        {{ item.student.student_name }}
+                    </strong>
+
+                    <div class="sv-student-detail">
+                        <span>Student ID</span>
+                        {{ item.student.student_id }}
+                    </div>
+
+                    <div class="sv-student-detail">
+                        <span>Status</span>
+                        {{ item.status }}
+                    </div>
+
+                </div>
+
+                <a href="{% url 'Teacher:EvaluateScript' item.stdexam_id %}" class="sv-evaluate-button">
+                    Evaluate
+                </a>
+
+            </div>
+
+            {% empty %}
+
+            <div class="sv-no-students">
+                <p>No students found for this exam.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

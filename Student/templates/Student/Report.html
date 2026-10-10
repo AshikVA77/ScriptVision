@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptVision - Student Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>ScriptVision</h1>
+    <h2>Student Evaluation Report</h2>
+
+    <table>
+
+        <tr>
+            <th colspan="2">Student Details</th>
+        </tr>
+
+        <tr>
+            <td>Name</td>
+            <td>{{ student.student_name }}</td>
+        </tr>
+
+        <tr>
+            <td>Department</td>
+            <td>{{ student.student_department }}</td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+            <td>{{ student.student_email }}</td>
+        </tr>
+
+        <tr>
+            <td>Exam</td>
+            <td>{{ result.stdexam.exam.exam_name }}</td>
+        </tr>
+
+        <tr>
+            <td>Subject</td>
+            <td>{{ result.stdexam.exam.subject.subject_name }}</td>
+        </tr>
+
+        <tr>
+            <td>Teacher</td>
+            <td>{{ result.stdexam.exam.teacher.teacher_name }}</td>
+        </tr>
+
+        <tr>
+            <td>Exam Date</td>
+            <td>{{ result.stdexam.exam.exam_date }}</td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <table>
+
+        <tr>
+            <th colspan="2">Evaluation Summary</th>
+        </tr>
+
+        <tr>
+            <td>Total AI Marks</td>
+            <td>{{ result.total_ai_marks }}</td>
+        </tr>
+
+        <tr>
+            <td>Teacher Marks</td>
+            <td>{{ result.total_teacher_marks }}</td>
+        </tr>
+
+        <tr>
+            <td>Final Marks</td>
+            <td>{{ result.total_final_marks }}</td>
+        </tr>
+
+        <tr>
+            <td>Grade</td>
+            <td>{{ result.grade }}</td>
+        </tr>
+
+        <tr>
+            <td>Teacher Remarks</td>
+            <td>{{ result.remarks }}</td>
+        </tr>
+
+        <tr>
+            <td>Published Date</td>
+            <td>{{ result.published_date }}</td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <table>
+
+        <tr>
+            <th>Question</th>
+            <th>Similarity (%)</th>
+            <th>AI Score</th>
+            <th>Teacher Score</th>
+            <th>Final Mark</th>
+        </tr>
+
+        {% for evaluation in evaluations %}
+
+        <tr>
+
+            <td>{{ evaluation.question.question_number }}</td>
+
+            <td>{{ evaluation.similarity_score }}</td>
+
+            <td>{{ evaluation.ai_score }}</td>
+
+            <td>{{ evaluation.teacher_score }}</td>
+
+            <td>{{ evaluation.final_mark }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <br>
+
+    <table>
+
+        <tr>
+            <th>Overall AI Feedback</th>
+        </tr>
+
+        <tr>
+            <td>
+
+                {% for evaluation in evaluations %}
+
+                <b>{{ evaluation.question.question_number }}</b><br>
+
+                {{ evaluation.feedback }}
+
+                <hr>
+
+                {% endfor %}
+
+            </td>
+        </tr>
+
+    </table>
+
+</body>
+
+</html>

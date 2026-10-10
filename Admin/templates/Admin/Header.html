@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptVision | Admin Dashboard</title>
+
+    <link rel="icon" type="image/png" href="{% static 'Main/img/scriptvisionlogo.png' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/ScriptVisionAdmin.css' %}">
+</head>
+
+<body>
+    <div id="app">
+
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'Admin:Adminhome' %}" class="sv-admin-logo">
+                            <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision">
+                            <span>ScriptVision</span>
+                        </a>
+
+                        <a href="#" class="sidebar-hide d-xl-none d-block">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">MAIN MENU</li>
+
+                        <li class="sidebar-item active">
+                            <a href="{% url 'Admin:Adminhome' %}" class="sidebar-link">
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-title">ACADEMIC MANAGEMENT</li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Departments' %}" class="sidebar-link">
+                                <i class="bi bi-building"></i>
+                                <span>Departments</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Subjects' %}" class="sidebar-link">
+                                <i class="bi bi-book"></i>
+                                <span>Subjects</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:AddMaterials' %}" class="sidebar-link">
+                                <i class="bi bi-journal-text"></i>
+                                <span>Study Materials</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-title">USER MANAGEMENT</li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Teachers' %}" class="sidebar-link">
+                                <i class="bi bi-person"></i>
+                                <span>Teachers</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Students' %}" class="sidebar-link">
+                                <i class="bi bi-people"></i>
+                                <span>Students</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Logout' %}" class="sidebar-link">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+
+        <footer class="sv-admin-footer">
+            <p>© {% now "Y" %} ScriptVision. All rights reserved.</p>
+        </footer>
+
+    </div>
+    </div>
+
+    <script src="{% static 'Admin/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'Admin/dist/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'Admin/dist/assets/js/main.js' %}"></script>
+</body>
+
+</html>

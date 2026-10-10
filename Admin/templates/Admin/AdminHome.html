@@ -1,0 +1,241 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptVision | Admin Dashboard</title>
+
+    <link rel="icon" type="image/png" href="{% static 'Main/img/scriptvisionlogo.png' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'Admin/dist/assets/css/ScriptVisionAdmin.css' %}">
+</head>
+
+<body>
+    <div id="app">
+
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'Admin:Adminhome' %}" class="sv-admin-logo">
+                            <img src="{% static 'Main/img/scriptvisionlogo.png' %}" alt="ScriptVision">
+                            <span>ScriptVision</span>
+                        </a>
+
+                        <a href="#" class="sidebar-hide d-xl-none d-block">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">MAIN MENU</li>
+
+                        <li class="sidebar-item active">
+                            <a href="{% url 'Admin:Adminhome' %}" class="sidebar-link">
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-title">ACADEMIC MANAGEMENT</li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Departments' %}" class="sidebar-link">
+                                <i class="bi bi-building"></i>
+                                <span>Departments</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Subjects' %}" class="sidebar-link">
+                                <i class="bi bi-book"></i>
+                                <span>Subjects</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:AddMaterials' %}" class="sidebar-link">
+                                <i class="bi bi-journal-text"></i>
+                                <span>Study Materials</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-title">USER MANAGEMENT</li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Teachers' %}" class="sidebar-link">
+                                <i class="bi bi-person"></i>
+                                <span>Teachers</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Students' %}" class="sidebar-link">
+                                <i class="bi bi-people"></i>
+                                <span>Students</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{% url 'Admin:Logout' %}" class="sidebar-link">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="main">
+
+            <header class="mb-4">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+            <div class="sv-admin-heading">
+                <div>
+                    <span class="sv-admin-eyebrow">ADMINISTRATION</span>
+                    <h3>Dashboard</h3>
+                    <p>Manage your academic environment from one place.</p>
+                </div>
+                <div class="sv-admin-date">
+                    <i class="bi bi-shield-check"></i>
+                    Admin Panel
+                </div>
+            </div>
+
+            <div class="page-content">
+
+                <section class="row sv-admin-stats">
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="sv-stat-icon purple">
+                                    <i class="bi bi-building"></i>
+                                </div>
+                                <p>Total Departments</p>
+                                <h4>{{ department_count|default:"0" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="sv-stat-icon blue">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <p>Total Subjects</p>
+                                <h4>{{ subject_count|default:"0" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="sv-stat-icon green">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <p>Total Teachers</p>
+                                <h4>{{ teacher_count|default:"0" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="sv-stat-icon orange">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <p>Total Students</p>
+                                <h4>{{ student_count|default:"0" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section class="row mt-4">
+
+                    <div class="col-12 col-lg-7">
+                        <div class="card sv-admin-welcome">
+                            <div class="card-body">
+                                <span class="sv-admin-eyebrow">SCRIPTVISION</span>
+                                <h4>Welcome to your dashboard</h4>
+                                <p>
+                                    Manage departments, subjects, teachers, students
+                                    and academic resources efficiently.
+                                </p>
+                                <div class="sv-admin-welcome-icon">
+                                    <i class="bi bi-mortarboard"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-5">
+                        <div class="card sv-admin-quick">
+                            <div class="card-header">
+                                <h4>Quick Access</h4>
+                            </div>
+                            <div class="card-body">
+                                <a href="{% url 'Admin:Departments' %}" class="sv-admin-quick-link">
+                                    <span><i class="bi bi-building"></i></span>
+                                    <div>
+                                        <h6>Manage Departments</h6>
+                                        <p>Organize academic departments</p>
+                                    </div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+
+                                <a href="{% url 'Admin:Subjects' %}" class="sv-admin-quick-link">
+                                    <span><i class="bi bi-book"></i></span>
+                                    <div>
+                                        <h6>Manage Subjects</h6>
+                                        <p>Maintain subject information</p>
+                                    </div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+
+                                <a href="{% url 'Admin:AddMaterials' %}" class="sv-admin-quick-link">
+                                    <span><i class="bi bi-journal-text"></i></span>
+                                    <div>
+                                        <h6>Study Materials</h6>
+                                        <p>Manage learning resources</p>
+                                    </div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+
+            <footer class="sv-admin-footer">
+                <p>© {% now "Y" %} ScriptVision. All rights reserved.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="{% static 'Admin/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'Admin/dist/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'Admin/dist/assets/js/main.js' %}"></script>
+</body>
+
+</html>

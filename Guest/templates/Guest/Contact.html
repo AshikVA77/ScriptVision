@@ -1,0 +1,425 @@
+{% extends 'Guest/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptVision - Contact Us</title>
+
+</head>
+
+<style>
+    .sv-contact-page {
+        --sv-contact-bg: #08080d;
+        --sv-contact-card: #11111a;
+        --sv-contact-text: #f5f5f7;
+        --sv-contact-muted: #b7b7c5;
+        --sv-contact-border: rgba(255, 255, 255, 0.1);
+        --sv-contact-primary: #8b5cf6;
+        --sv-contact-secondary: #477dff;
+
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 125px 24px 80px;
+        color: var(--sv-contact-text);
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.1), transparent 48%),
+            var(--sv-contact-bg);
+        box-sizing: border-box;
+    }
+
+    .sv-contact-page *,
+    .sv-contact-page *::before,
+    .sv-contact-page *::after {
+        box-sizing: border-box;
+    }
+
+    .sv-contact-page .sv-contact-header {
+        max-width: 750px;
+        margin: 0 auto 45px;
+        text-align: center;
+    }
+
+    .sv-contact-page .sv-contact-badge {
+        display: inline-block;
+        margin-bottom: 18px;
+        padding: 8px 16px;
+        border: 1px solid var(--sv-contact-border);
+        border-radius: 50px;
+        background: rgba(139, 92, 246, 0.12);
+        color: #a78bfa;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+    }
+
+    .sv-contact-page .sv-contact-header h1 {
+        margin: 0 0 14px;
+        color: var(--sv-contact-text);
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 800;
+        line-height: 1.25;
+    }
+
+    .sv-contact-page .sv-contact-header h1 span {
+        color: var(--sv-contact-primary);
+    }
+
+    .sv-contact-page .sv-contact-header p {
+        margin: 0;
+        color: var(--sv-contact-muted);
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .sv-contact-page .sv-contact-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+        gap: 25px;
+        max-width: 1050px;
+        margin: 0 auto;
+        align-items: start;
+    }
+
+    .sv-contact-page .sv-contact-form-card,
+    .sv-contact-page .sv-contact-info-card {
+        min-width: 0;
+        padding: 32px;
+        border: 1px solid var(--sv-contact-border);
+        border-radius: 18px;
+        background: var(--sv-contact-card);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .sv-contact-page .sv-contact-form-card h2,
+    .sv-contact-page .sv-contact-info-card h2 {
+        margin: 0 0 8px;
+        color: var(--sv-contact-text);
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .sv-contact-page .sv-contact-card-subtitle {
+        margin: 0 0 28px;
+        color: var(--sv-contact-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .sv-contact-page .sv-contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .sv-contact-page .sv-contact-field {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        min-width: 0;
+    }
+
+    .sv-contact-page .sv-contact-field label {
+        color: var(--sv-contact-text);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .sv-contact-page .sv-contact-field input,
+    .sv-contact-page .sv-contact-field textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        padding: 13px 15px;
+        border: 1px solid var(--sv-contact-border);
+        border-radius: 9px;
+        outline: none;
+        background: #0b0b12;
+        color: var(--sv-contact-text);
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.6;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sv-contact-page .sv-contact-field input::placeholder,
+    .sv-contact-page .sv-contact-field textarea::placeholder {
+        color: #777787;
+    }
+
+    .sv-contact-page .sv-contact-field input:focus,
+    .sv-contact-page .sv-contact-field textarea:focus {
+        border-color: var(--sv-contact-primary);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+
+    .sv-contact-page .sv-contact-field textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .sv-contact-page .sv-contact-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px 22px;
+        border: none;
+        border-radius: 9px;
+        background: linear-gradient(135deg,
+                var(--sv-contact-primary),
+                var(--sv-contact-secondary));
+        color: #fff;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sv-contact-page .sv-contact-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.25);
+    }
+
+    .sv-contact-page .sv-contact-submit:focus-visible {
+        outline: 2px solid var(--sv-contact-primary);
+        outline-offset: 4px;
+    }
+
+    .sv-contact-page .sv-contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 28px;
+    }
+
+    .sv-contact-page .sv-contact-detail {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        min-width: 0;
+    }
+
+    .sv-contact-page .sv-contact-detail-icon {
+        display: flex;
+        flex: 0 0 44px;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--sv-contact-border);
+        border-radius: 12px;
+        background: rgba(139, 92, 246, 0.12);
+        color: #a78bfa;
+        font-size: 19px;
+    }
+
+    .sv-contact-page .sv-contact-detail-content {
+        min-width: 0;
+    }
+
+    .sv-contact-page .sv-contact-detail-content h3 {
+        margin: 1px 0 6px;
+        color: var(--sv-contact-text);
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .sv-contact-page .sv-contact-detail-content p,
+    .sv-contact-page .sv-contact-detail-content a {
+        margin: 0;
+        color: var(--sv-contact-muted);
+        font-size: 13px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        text-decoration: none;
+    }
+
+    .sv-contact-page .sv-contact-detail-content a:hover {
+        color: var(--sv-contact-primary);
+    }
+
+    .sv-contact-page .sv-contact-note {
+        margin-top: 30px;
+        padding: 18px;
+        border: 1px solid var(--sv-contact-border);
+        border-radius: 12px;
+        background: rgba(139, 92, 246, 0.07);
+        color: var(--sv-contact-muted);
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    /* Light theme */
+    html[data-theme="light"] .sv-contact-page,
+    body[data-theme="light"] .sv-contact-page,
+    [data-bs-theme="light"] .sv-contact-page,
+    body.light-theme .sv-contact-page,
+    html.light .sv-contact-page {
+        --sv-contact-bg: #ffffff;
+        --sv-contact-card: #ffffff;
+        --sv-contact-text: #101828;
+        --sv-contact-muted: #667085;
+        --sv-contact-border: #e4e7ec;
+        --sv-contact-primary: #6941c6;
+        --sv-contact-secondary: #477dff;
+
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(105, 65, 198, 0.08), transparent 48%),
+            var(--sv-contact-bg);
+    }
+
+    html[data-theme="light"] .sv-contact-page .sv-contact-field input,
+    html[data-theme="light"] .sv-contact-page .sv-contact-field textarea,
+    body[data-theme="light"] .sv-contact-page .sv-contact-field input,
+    body[data-theme="light"] .sv-contact-page .sv-contact-field textarea,
+    [data-bs-theme="light"] .sv-contact-page .sv-contact-field input,
+    [data-bs-theme="light"] .sv-contact-page .sv-contact-field textarea,
+    body.light-theme .sv-contact-page .sv-contact-field input,
+    body.light-theme .sv-contact-page .sv-contact-field textarea,
+    html.light .sv-contact-page .sv-contact-field input,
+    html.light .sv-contact-page .sv-contact-field textarea {
+        background: #ffffff;
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+        .sv-contact-page .sv-contact-layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .sv-contact-page .sv-contact-info-card {
+            order: 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .sv-contact-page {
+            padding: 110px 15px 55px;
+        }
+
+        .sv-contact-page .sv-contact-header {
+            margin-bottom: 32px;
+        }
+
+        .sv-contact-page .sv-contact-header p {
+            font-size: 14px;
+        }
+
+        .sv-contact-page .sv-contact-form-card,
+        .sv-contact-page .sv-contact-info-card {
+            padding: 23px 18px;
+            border-radius: 14px;
+        }
+
+        .sv-contact-page .sv-contact-form-card h2,
+        .sv-contact-page .sv-contact-info-card h2 {
+            font-size: 20px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .sv-contact-page *,
+        .sv-contact-page *::before,
+        .sv-contact-page *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="sv-contact-page">
+        <section class="sv-contact-header">
+            <span class="sv-contact-badge">GET IN TOUCH</span>
+            <h1>Contact <span>Us</span></h1>
+            <p>We'd love to hear from you! Send us your questions or feedback, and we'll be happy to help.</p>
+        </section>
+
+        <div class="sv-contact-layout">
+            <div class="sv-contact-form-card">
+                <h2>Send us a message</h2>
+                <p class="sv-contact-card-subtitle">Fill out the form below to get in touch with our team.</p>
+
+                <form class="sv-contact-form" method="POST" action="">
+                    {% csrf_token %}
+
+                    <div class="sv-contact-field">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="sv-contact-field">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="sv-contact-field">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="What is this about?" required>
+                    </div>
+
+                    <div class="sv-contact-field">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Write your message here..."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="sv-contact-submit">
+                        Send Message <span>→</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="sv-contact-info-card">
+                <h2>Contact Information</h2>
+                <p class="sv-contact-card-subtitle">Reach out to us through the following channels.</p>
+
+                <div class="sv-contact-details">
+                    <div class="sv-contact-detail">
+                        <div class="sv-contact-detail-icon">✉</div>
+                        <div class="sv-contact-detail-content">
+                            <h3>Email Us</h3>
+                            <a href="mailto:support@scriptvision.com">support@scriptvision.com</a>
+                        </div>
+                    </div>
+
+                    <div class="sv-contact-detail">
+                        <div class="sv-contact-detail-icon">☎</div>
+                        <div class="sv-contact-detail-content">
+                            <h3>Call Us</h3>
+                            <p>+91 XXXXXXXXXX</p>
+                        </div>
+                    </div>
+
+                    <div class="sv-contact-detail">
+                        <div class="sv-contact-detail-icon">⌖</div>
+                        <div class="sv-contact-detail-content">
+                            <h3>Our Address</h3>
+                            <p>
+                                Department of Computer Applications,<br>
+                                College of Engineering Cherthala,<br>
+                                Alappuzha, Kerala, India
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sv-contact-note">
+                    Have questions about ScriptVision? Contact us for assistance with the platform and its features.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

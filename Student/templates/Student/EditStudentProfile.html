@@ -1,0 +1,504 @@
+{% extends 'Student/Header.html' %}
+{% block content%}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Profile</title>
+</head>
+
+<style>
+    /* =========================================
+   ScriptVision - Edit Student Profile
+   All classes are uniquely scoped with sv-edit-
+   ========================================= */
+
+    .sv-edit-page {
+        min-height: calc(100vh - 80px);
+        padding: 100px 20px 80px;
+        background: var(--bg);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sv-edit-page::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background: rgba(139, 92, 246, 0.10);
+        filter: blur(110px);
+        left: -180px;
+        top: 40px;
+        pointer-events: none;
+    }
+
+    .sv-edit-page::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: rgba(139, 92, 246, 0.08);
+        filter: blur(110px);
+        right: -160px;
+        bottom: -120px;
+        pointer-events: none;
+    }
+
+
+    /* =========================================
+   Wrapper
+   ========================================= */
+
+    .sv-edit-wrapper {
+        width: 100%;
+        max-width: 760px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+
+    /* =========================================
+   Heading
+   ========================================= */
+
+    .sv-edit-heading {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-edit-label {
+        display: inline-block;
+        color: var(--pur2);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .sv-edit-heading h2 {
+        margin: 0;
+        color: var(--tx);
+        font-size: clamp(2rem, 4vw, 2.7rem);
+        font-weight: 700;
+    }
+
+    .sv-edit-heading p {
+        margin: 10px auto 0;
+        color: var(--tx2);
+        font-size: 0.95rem;
+    }
+
+
+    /* =========================================
+   Card
+   ========================================= */
+
+    .sv-edit-card {
+        background: rgba(17, 17, 26, 0.84);
+        border: 1px solid rgba(139, 92, 246, 0.18);
+        border-radius: 22px;
+        padding: 35px;
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.30),
+            0 0 40px rgba(139, 92, 246, 0.05);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =========================================
+   Form
+   ========================================= */
+
+    .sv-edit-form {
+        width: 100%;
+    }
+
+
+    /* =========================================
+   Student ID / Department
+   ========================================= */
+
+    .sv-edit-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .sv-edit-info {
+        padding: 16px 18px;
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-info span {
+        display: block;
+        color: var(--tx3);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 6px;
+    }
+
+    .sv-edit-info strong {
+        display: block;
+        color: var(--tx);
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+
+    /* =========================================
+   Fields
+   ========================================= */
+
+    .sv-edit-field {
+        margin-bottom: 22px;
+    }
+
+    .sv-edit-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+
+    /* =========================================
+   Text Inputs
+   ========================================= */
+
+    .sv-edit-field input[type="text"],
+    .sv-edit-field input[type="email"] {
+        width: 100%;
+        height: 48px;
+        padding: 0 15px;
+        border-radius: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--tx);
+        font-size: 0.9rem;
+        outline: none;
+        transition: 0.25s ease;
+        box-sizing: border-box;
+    }
+
+    .sv-edit-field input[type="text"]:focus,
+    .sv-edit-field input[type="email"]:focus {
+        border-color: rgba(139, 92, 246, 0.55);
+        background: rgba(139, 92, 246, 0.045);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+    }
+
+    .sv-edit-field input[type="text"]::placeholder,
+    .sv-edit-field input[type="email"]::placeholder {
+        color: var(--tx3);
+    }
+
+
+    /* =========================================
+   Current Profile Picture
+   ========================================= */
+
+    .sv-edit-current-picture {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px;
+        margin-bottom: 12px;
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-current-picture img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(139, 92, 246, 0.45);
+    }
+
+    .sv-edit-current-picture span {
+        display: block;
+        color: var(--tx);
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .sv-edit-current-picture small {
+        display: block;
+        color: var(--tx3);
+        font-size: 0.75rem;
+    }
+
+
+    /* =========================================
+   File Input
+   ========================================= */
+
+    .sv-edit-file {
+        padding: 13px;
+        border-radius: 11px;
+        border: 1px dashed rgba(139, 92, 246, 0.30);
+        background: rgba(139, 92, 246, 0.025);
+    }
+
+    .sv-edit-file input[type="file"] {
+        width: 100%;
+        color: var(--tx2);
+        font-size: 0.82rem;
+    }
+
+    .sv-edit-file input[type="file"]::file-selector-button {
+        margin-right: 12px;
+        padding: 8px 13px;
+        border: 1px solid rgba(139, 92, 246, 0.30);
+        border-radius: 8px;
+        background: rgba(139, 92, 246, 0.10);
+        color: var(--pur2);
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+
+    /* =========================================
+   Buttons
+   ========================================= */
+
+    .sv-edit-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-edit-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+        height: 44px;
+        padding: 0 18px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.025);
+        color: var(--tx2) !important;
+        text-decoration: none !important;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-cancel:hover {
+        color: var(--tx) !important;
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+
+    .sv-edit-save {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 145px;
+        height: 44px;
+        padding: 0 20px;
+        border: 1px solid rgba(167, 139, 250, 0.35);
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.18);
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.28);
+    }
+
+
+    /* =========================================
+   Mobile
+   ========================================= */
+
+    @media (max-width: 600px) {
+
+        .sv-edit-page {
+            padding: 90px 15px 60px;
+        }
+
+        .sv-edit-card {
+            padding: 22px;
+            border-radius: 18px;
+        }
+
+        .sv-edit-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sv-edit-actions {
+            flex-direction: column-reverse;
+        }
+
+        .sv-edit-cancel,
+        .sv-edit-save {
+            width: 100%;
+        }
+
+        .sv-edit-current-picture {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<body>
+        <h2>Edit Profile</h2>
+
+        <div class="sv-edit-page">
+
+            <div class="sv-edit-wrapper">
+
+                <!-- Page Heading -->
+                <div class="sv-edit-heading">
+                    <span class="sv-edit-label">Student Account</span>
+                    <h2>Edit Profile</h2>
+                    <p>Update your personal information and profile picture.</p>
+                </div>
+
+
+                <!-- Edit Card -->
+                <div class="sv-edit-card">
+
+                    <form method="POST" enctype="multipart/form-data" class="sv-edit-form">
+
+                        {% csrf_token %}
+
+
+                        <!-- Read Only Information -->
+                        <div class="sv-edit-info-grid">
+
+                            <div class="sv-edit-info">
+                                <span>Student ID</span>
+                                <strong>{{ student.student_id }}</strong>
+                            </div>
+
+                            <div class="sv-edit-info">
+                                <span>Department</span>
+                                <strong>{{ student.student_department }}</strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Name -->
+                        <div class="sv-edit-field">
+                            <label for="svStudentName">
+                                Name
+                            </label>
+
+                            <input type="text" id="svStudentName" name="student_name" value="{{ student.student_name }}"
+                                required>
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="sv-edit-field">
+                            <label for="svStudentEmail">
+                                Email
+                            </label>
+
+                            <input type="email" id="svStudentEmail" name="student_email"
+                                value="{{ student.student_email }}" required>
+                        </div>
+
+
+                        <!-- Phone -->
+                        <div class="sv-edit-field">
+                            <label for="svStudentPhone">
+                                Phone
+                            </label>
+
+                            <input type="text" id="svStudentPhone" name="student_phone"
+                                value="{{ student.student_phone }}" required>
+                        </div>
+
+
+                        <!-- Profile Picture -->
+                        <div class="sv-edit-field">
+
+                            <label for="svStudentProfilePic">
+                                Profile Picture
+                            </label>
+
+                            {% if student.student_profile_pic %}
+
+                            <div class="sv-edit-current-picture">
+
+                                <img src="{{ student.student_profile_pic.url }}" alt="Current Profile Picture">
+
+                                <div>
+                                    <span>Current profile picture</span>
+                                    <small>Choose a new image below to replace it.</small>
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+
+                            <div class="sv-edit-file">
+
+                                <input type="file" id="svStudentProfilePic" name="student_profile_pic" accept="image/*">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="sv-edit-actions">
+
+                            <a href="{% url 'Student:StudentProfile' %}" class="sv-edit-cancel">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="sv-edit-save">
+                                <i class="fa-solid fa-check"></i>
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+</body>
+
+</html>
+
+{% endblock %}

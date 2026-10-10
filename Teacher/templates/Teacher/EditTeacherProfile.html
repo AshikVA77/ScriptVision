@@ -1,0 +1,642 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Profile</title>
+</head>
+
+<style>
+    /* =================================
+   Edit Teacher Profile
+================================= */
+
+    .sv-edit-teacher-page {
+        min-height: 75vh;
+        padding: 80px 20px;
+    }
+
+    .sv-edit-teacher-container {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+
+
+    /* Header */
+
+    .sv-edit-teacher-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-edit-teacher-header h2 {
+        margin: 0 0 10px;
+        color: var(--tx);
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .sv-edit-teacher-header p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.95rem;
+    }
+
+
+    /* Card */
+
+    .sv-edit-teacher-card {
+        background: var(--bg3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    }
+
+
+    /* Teacher ID / Department */
+
+    .sv-edit-teacher-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .sv-edit-teacher-info>div {
+        padding: 16px 18px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-teacher-info span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--tx3);
+        font-size: 0.78rem;
+    }
+
+    .sv-edit-teacher-info strong {
+        color: var(--tx);
+        font-size: 0.92rem;
+        font-weight: 500;
+    }
+
+
+    /* Fields */
+
+    .sv-edit-teacher-field {
+        margin-bottom: 21px;
+    }
+
+    .sv-edit-teacher-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx2);
+        font-size: 0.88rem;
+        font-weight: 500;
+    }
+
+    .sv-edit-teacher-field input[type="text"],
+    .sv-edit-teacher-field input[type="email"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-size: 0.92rem;
+        outline: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-field input[type="text"]:focus,
+    .sv-edit-teacher-field input[type="email"]:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+
+    /* Current Profile Picture */
+
+    .sv-edit-teacher-current-image {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-teacher-current-image img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid rgba(139, 92, 246, 0.35);
+    }
+
+    .sv-edit-teacher-current-image span {
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+
+    /* File Input */
+
+    .sv-edit-teacher-file {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px dashed rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--tx3);
+        font-size: 0.85rem;
+    }
+
+    .sv-edit-teacher-file::file-selector-button {
+        margin-right: 10px;
+        padding: 8px 13px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(139, 92, 246, 0.12);
+        color: var(--pur2);
+        cursor: pointer;
+    }
+
+
+    /* Actions */
+
+    .sv-edit-teacher-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-edit-teacher-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--tx2);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-cancel:hover {
+        color: var(--tx);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sv-edit-teacher-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+        .sv-edit-teacher-page {
+            padding: 50px 15px;
+        }
+
+        .sv-edit-teacher-header h2 {
+            font-size: 1.6rem;
+        }
+
+        .sv-edit-teacher-card {
+            padding: 25px 18px;
+        }
+
+        .sv-edit-teacher-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .sv-edit-teacher-page {
+            padding: 40px 12px;
+        }
+
+        .sv-edit-teacher-card {
+            padding: 22px 15px;
+        }
+
+        .sv-edit-teacher-actions {
+            flex-direction: column-reverse;
+        }
+
+        .sv-edit-teacher-cancel,
+        .sv-edit-teacher-save {
+            width: 100%;
+        }
+    }
+</style>
+
+<style>
+    /* =================================
+   Edit Teacher Profile
+================================= */
+
+    .sv-edit-teacher-page {
+        min-height: 75vh;
+        padding: 80px 20px;
+    }
+
+    .sv-edit-teacher-container {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+
+
+    /* Header */
+
+    .sv-edit-teacher-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sv-edit-teacher-header h2 {
+        margin: 0 0 10px;
+        color: var(--tx);
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .sv-edit-teacher-header p {
+        margin: 0;
+        color: var(--tx3);
+        font-size: 0.95rem;
+    }
+
+
+    /* Card */
+
+    .sv-edit-teacher-card {
+        background: var(--bg3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    }
+
+
+    /* Teacher ID / Department */
+
+    .sv-edit-teacher-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .sv-edit-teacher-info>div {
+        padding: 16px 18px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-teacher-info span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--tx3);
+        font-size: 0.78rem;
+    }
+
+    .sv-edit-teacher-info strong {
+        color: var(--tx);
+        font-size: 0.92rem;
+        font-weight: 500;
+    }
+
+
+    /* Fields */
+
+    .sv-edit-teacher-field {
+        margin-bottom: 21px;
+    }
+
+    .sv-edit-teacher-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tx2);
+        font-size: 0.88rem;
+        font-weight: 500;
+    }
+
+    .sv-edit-teacher-field input[type="text"],
+    .sv-edit-teacher-field input[type="email"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: var(--bg2);
+        color: var(--tx);
+        font-size: 0.92rem;
+        outline: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-field input[type="text"]:focus,
+    .sv-edit-teacher-field input[type="email"]:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+
+    /* Current Profile Picture */
+
+    .sv-edit-teacher-current-image {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sv-edit-teacher-current-image img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid rgba(139, 92, 246, 0.35);
+    }
+
+    .sv-edit-teacher-current-image span {
+        color: var(--tx3);
+        font-size: 0.82rem;
+    }
+
+
+    /* File Input */
+
+    .sv-edit-teacher-file {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px dashed rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--tx3);
+        font-size: 0.85rem;
+    }
+
+    .sv-edit-teacher-file::file-selector-button {
+        margin-right: 10px;
+        padding: 8px 13px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(139, 92, 246, 0.12);
+        color: var(--pur2);
+        cursor: pointer;
+    }
+
+
+    /* Actions */
+
+    .sv-edit-teacher-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sv-edit-teacher-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--tx2);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-cancel:hover {
+        color: var(--tx);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sv-edit-teacher-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--pur), #7c3aed);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-edit-teacher-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+        .sv-edit-teacher-page {
+            padding: 50px 15px;
+        }
+
+        .sv-edit-teacher-header h2 {
+            font-size: 1.6rem;
+        }
+
+        .sv-edit-teacher-card {
+            padding: 25px 18px;
+        }
+
+        .sv-edit-teacher-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .sv-edit-teacher-page {
+            padding: 40px 12px;
+        }
+
+        .sv-edit-teacher-card {
+            padding: 22px 15px;
+        }
+
+        .sv-edit-teacher-actions {
+            flex-direction: column-reverse;
+        }
+
+        .sv-edit-teacher-cancel,
+        .sv-edit-teacher-save {
+            width: 100%;
+        }
+    }
+</style>
+
+<body>
+    <center>
+        <div class="sv-edit-teacher-page">
+
+            <div class="sv-edit-teacher-container">
+
+                <div class="sv-edit-teacher-header">
+                    <h2>Edit Profile</h2>
+                    <p>Update your personal and contact information.</p>
+                </div>
+
+                <div class="sv-edit-teacher-card">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Read-only Information -->
+                        <div class="sv-edit-teacher-info">
+
+                            <div>
+                                <span>Teacher ID</span>
+                                <strong>{{ teacher.teacher_id }}</strong>
+                            </div>
+
+                            <div>
+                                <span>Department</span>
+                                <strong>{{ teacher.teacher_department }}</strong>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Name -->
+                        <div class="sv-edit-teacher-field">
+
+                            <label for="teacher_name">Name</label>
+
+                            <input type="text" id="teacher_name" name="teacher_name" value="{{ teacher.teacher_name }}"
+                                required>
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="sv-edit-teacher-field">
+
+                            <label for="teacher_email">Email</label>
+
+                            <input type="email" id="teacher_email" name="teacher_email"
+                                value="{{ teacher.teacher_email }}" required>
+
+                        </div>
+
+
+                        <!-- Phone -->
+                        <div class="sv-edit-teacher-field">
+
+                            <label for="teacher_phone">Phone</label>
+
+                            <input type="text" id="teacher_phone" name="teacher_phone"
+                                value="{{ teacher.teacher_phone }}" required>
+
+                        </div>
+
+
+                        <!-- Profile Picture -->
+                        <div class="sv-edit-teacher-field">
+
+                            <label for="teacher_profile_pic">
+                                Profile Picture
+                            </label>
+
+                            {% if teacher.teacher_profile_pic %}
+
+                            <div class="sv-edit-teacher-current-image">
+
+                                <img src="{{ teacher.teacher_profile_pic.url }}" alt="Current Profile Picture">
+
+                                <span>Current Profile Picture</span>
+
+                            </div>
+
+                            {% endif %}
+
+                            <input type="file" id="teacher_profile_pic" name="teacher_profile_pic" accept="image/*"
+                                class="sv-edit-teacher-file">
+
+                        </div>
+
+
+                        <!-- Actions -->
+                        <div class="sv-edit-teacher-actions">
+
+                            <a href="{% url 'Teacher:TeacherProfile' %}" class="sv-edit-teacher-cancel">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="sv-edit-teacher-save">
+                                <i class="fa-solid fa-check"></i>
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </center>
+</body>
+
+</html>
+
+{% endblock %}

@@ -1,0 +1,320 @@
+{% extends 'Teacher/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vision - Select Student</title>
+</head>
+
+<style>
+    /* =========================================
+   Select Student & Upload Answer Script
+========================================= */
+
+    .sv-upload-student-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 55px 20px 80px;
+        color: var(--tx);
+    }
+
+
+    /* =========================================
+   Header
+========================================= */
+
+    .sv-upload-student-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .sv-upload-student-header h1 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--tx);
+    }
+
+    .sv-upload-student-header h2 {
+        margin: 0 0 20px;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--tx2);
+    }
+
+    .sv-upload-student-header p {
+        margin: 0;
+        color: var(--tx2);
+        font-size: 0.95rem;
+    }
+
+    .sv-upload-student-header strong {
+        color: var(--pur2);
+    }
+
+
+    /* =========================================
+   Error
+========================================= */
+
+    .sv-upload-student-error {
+        margin-bottom: 20px;
+        padding: 13px 16px;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 10px;
+        background: rgba(239, 68, 68, 0.08);
+        color: #f87171;
+        text-align: center;
+    }
+
+
+    /* =========================================
+   Form Card
+========================================= */
+
+    .sv-upload-student-form {
+        padding: 30px;
+        background: rgba(17, 17, 26, 0.75);
+        border: 1px solid var(--bd);
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+
+    /* =========================================
+   Form Fields
+========================================= */
+
+    .sv-upload-field {
+        margin-bottom: 25px;
+    }
+
+    .sv-upload-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--tx);
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .sv-upload-field select,
+    .sv-upload-field input[type="file"] {
+        width: 100%;
+        padding: 12px 14px;
+        background: var(--bg2);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        color: var(--tx2);
+        font-size: 0.95rem;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+    .sv-upload-field select:focus,
+    .sv-upload-field input[type="file"]:focus {
+        border-color: var(--pur);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+    .sv-upload-field select option {
+        background: var(--bg2);
+        color: var(--tx);
+    }
+
+    .sv-upload-field small {
+        display: block;
+        margin-top: 8px;
+        color: var(--tx3);
+        font-size: 0.8rem;
+    }
+
+
+    /* =========================================
+   Upload Button
+========================================= */
+
+    .sv-upload-script-button {
+        width: 100%;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 10px;
+        background: var(--pur);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .sv-upload-script-button:hover {
+        background: var(--pur2);
+        transform: translateY(-1px);
+    }
+
+
+    /* =========================================
+   No Students
+========================================= */
+
+    .sv-upload-no-students {
+        padding: 30px 20px;
+        background: rgba(17, 17, 26, 0.75);
+        border: 1px solid var(--bd);
+        border-radius: 16px;
+        text-align: center;
+    }
+
+    .sv-upload-no-students p {
+        margin: 0;
+        color: var(--tx2);
+    }
+
+
+    /* =========================================
+   Back Button
+========================================= */
+
+    .sv-upload-back-button {
+        display: block;
+        width: fit-content;
+        margin: 25px auto 0;
+        padding: 10px 22px;
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        color: var(--tx2);
+        text-decoration: none;
+        transition: 0.25s ease;
+    }
+
+    .sv-upload-back-button:hover {
+        border-color: var(--pur);
+        color: var(--pur2);
+        background: rgba(139, 92, 246, 0.06);
+    }
+
+
+    /* =========================================
+   Responsive
+========================================= */
+
+    @media (max-width: 600px) {
+
+        .sv-upload-student-container {
+            padding: 35px 15px 60px;
+        }
+
+        .sv-upload-student-header h1 {
+            font-size: 1.7rem;
+        }
+
+        .sv-upload-student-header h2 {
+            font-size: 1.1rem;
+        }
+
+        .sv-upload-student-form {
+            padding: 22px;
+        }
+    }
+</style>
+
+<body>
+    <div class="sv-upload-student-container">
+
+        <div class="sv-upload-student-header">
+            <h1>Script Vision</h1>
+            <h2>Select Student and Upload Answer Script</h2>
+
+            <p>
+                Exam:
+                <strong>{{ exam.exam_name }}</strong>
+            </p>
+        </div>
+
+
+        {% if error %}
+        <div class="sv-upload-student-error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+
+        {% if stdexams %}
+
+        <form method="POST" enctype="multipart/form-data" class="sv-upload-student-form">
+
+            {% csrf_token %}
+
+            <div class="sv-upload-field">
+
+                <label for="student">
+                    Select Student
+                </label>
+
+                <select name="student" id="student" required>
+                    <option value="">-- Select Student --</option>
+
+                    {% for stdexam in stdexams %}
+                    <option value="{{ stdexam.student.student_id }}">
+                        {{ stdexam.student.student_name }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="sv-upload-field">
+
+                <label for="answer_script">
+                    Select Answer Script
+                </label>
+
+                <input type="file" name="answer_script" id="answer_script" accept=".pdf,.jpg,.jpeg,.png" required>
+
+                <small>
+                    Supported formats: PDF, JPG, JPEG, PNG
+                </small>
+
+            </div>
+
+
+            <button type="submit" class="sv-upload-script-button">
+                Upload Script
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <div class="sv-upload-no-students">
+            <p>No students have selected this subject.</p>
+        </div>
+
+        {% endif %}
+
+
+        <a href="{% url 'Teacher:UploadScripts' %}" class="sv-upload-back-button">
+            Back
+        </a>
+
+    </div>
+
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == "success" %}
+    <script>
+        alert("{{ message|escapejs }}");
+        window.location.href = "{% url 'Teacher:Teacherhome' %}";
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>
+{% endblock %}

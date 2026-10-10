@@ -1,0 +1,632 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Script Vision - View Results</title>
+
+    <style>
+        /* =========================================
+   ScriptVision - View Results
+   All classes use sv-results- prefix
+   ========================================= */
+
+        .sv-results-page {
+            min-height: calc(100vh - 80px);
+            padding: 100px 20px 80px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+   Background Glow
+   ========================================= */
+
+        .sv-results-glow {
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            filter: blur(110px);
+            pointer-events: none;
+        }
+
+        .sv-results-glow-one {
+            top: 20px;
+            left: -190px;
+            background: rgba(139, 92, 246, 0.10);
+        }
+
+        .sv-results-glow-two {
+            right: -180px;
+            bottom: -170px;
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+
+        /* =========================================
+   Wrapper
+   ========================================= */
+
+        .sv-results-wrapper {
+            width: 100%;
+            max-width: 1150px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* =========================================
+   Heading
+   ========================================= */
+
+        .sv-results-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-results-label {
+            display: inline-block;
+            color: var(--pur2);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        .sv-results-heading h2 {
+            margin: 0;
+            color: var(--tx);
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            font-weight: 700;
+        }
+
+        .sv-results-heading p {
+            margin: 10px auto 0;
+            max-width: 600px;
+            color: var(--tx2);
+            font-size: 0.95rem;
+        }
+
+
+        /* =========================================
+   Main Card
+   ========================================= */
+
+        .sv-results-card {
+            background: rgba(17, 17, 26, 0.84);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.28),
+                0 0 40px rgba(139, 92, 246, 0.04);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+
+        /* =========================================
+   Card Header
+   ========================================= */
+
+        .sv-results-card-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .sv-results-card-top h3 {
+            margin: 0 0 5px;
+            color: var(--tx);
+            font-size: 1.2rem;
+            font-weight: 650;
+        }
+
+        .sv-results-card-top p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.8rem;
+        }
+
+        .sv-results-count {
+            padding: 6px 11px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.16);
+            color: var(--pur2);
+            font-size: 0.72rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+   Table
+   ========================================= */
+
+        .sv-results-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .sv-results-table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+
+        /* Table Header */
+
+        .sv-results-table th {
+            padding: 14px 15px;
+            text-align: left;
+            color: var(--tx3);
+            font-size: 0.69rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            white-space: nowrap;
+        }
+
+
+        /* Table Body */
+
+        .sv-results-table td {
+            padding: 17px 15px;
+            color: var(--tx2);
+            font-size: 0.84rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .sv-results-table tbody tr {
+            transition: 0.2s ease;
+        }
+
+        .sv-results-table tbody tr:hover {
+            background: rgba(139, 92, 246, 0.035);
+        }
+
+        .sv-results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================================
+   Serial Number
+   ========================================= */
+
+        .sv-results-sl {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--tx3);
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Subject
+   ========================================= */
+
+        .sv-results-subject {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--tx);
+            font-weight: 550;
+            min-width: 170px;
+        }
+
+        .sv-results-subject-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: rgba(139, 92, 246, 0.08);
+            color: var(--pur2);
+            font-size: 0.72rem;
+        }
+
+
+        /* =========================================
+   Exam
+   ========================================= */
+
+        .sv-results-exam {
+            color: var(--tx2);
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+   AI Marks
+   ========================================= */
+
+        .sv-results-ai-marks {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: rgba(139, 92, 246, 0.08);
+            color: var(--pur2);
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+   Final Marks
+   ========================================= */
+
+        .sv-results-final-marks {
+            color: var(--tx);
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================================
+   Grade
+   ========================================= */
+
+        .sv-results-grade {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.15);
+            color: #6ee7b7;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+   View Result Button
+   ========================================= */
+
+        .sv-results-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 9px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.16);
+            color: var(--pur2) !important;
+            text-decoration: none !important;
+            font-size: 0.76rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: 0.25s ease;
+        }
+
+        .sv-results-view i {
+            font-size: 0.65rem;
+            transition: 0.2s ease;
+        }
+
+        .sv-results-view:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.30);
+            color: var(--pur3) !important;
+        }
+
+        .sv-results-view:hover i {
+            transform: translateX(3px);
+        }
+
+
+        /* =========================================
+   Empty State
+   ========================================= */
+
+        .sv-results-empty {
+            text-align: center;
+            padding: 55px 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+        }
+
+        .sv-results-empty-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: rgba(139, 92, 246, 0.08);
+            color: var(--pur2);
+            font-size: 1.15rem;
+        }
+
+        .sv-results-empty h4 {
+            margin: 0 0 7px;
+            color: var(--tx);
+            font-size: 1rem;
+        }
+
+        .sv-results-empty p {
+            max-width: 450px;
+            margin: 0 auto;
+            color: var(--tx3);
+            font-size: 0.82rem;
+        }
+
+
+        /* =========================================
+   Back Button
+   ========================================= */
+
+        .sv-results-back {
+            margin-top: 25px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .sv-results-back a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--tx2) !important;
+            text-decoration: none !important;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .sv-results-back a:hover {
+            color: var(--pur2) !important;
+        }
+
+
+        /* =========================================
+   Mobile
+   ========================================= */
+
+        @media (max-width: 700px) {
+
+            .sv-results-page {
+                padding: 90px 15px 60px;
+            }
+
+            .sv-results-card {
+                padding: 22px;
+                border-radius: 18px;
+            }
+
+            .sv-results-card-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .sv-results-table {
+                min-width: 850px;
+            }
+
+            .sv-results-table-wrap {
+                margin: 0 -5px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div class="sv-results-page">
+
+        <div class="sv-results-glow sv-results-glow-one"></div>
+        <div class="sv-results-glow sv-results-glow-two"></div>
+
+        <div class="sv-results-wrapper">
+
+            <!-- Heading -->
+            <div class="sv-results-heading">
+                <span class="sv-results-label">Academic Performance</span>
+
+                <h2>View Results</h2>
+
+                <p>
+                    View your examination marks, grades, and detailed evaluation results.
+                </p>
+            </div>
+
+
+            <!-- Results Card -->
+            <div class="sv-results-card">
+
+                <div class="sv-results-card-top">
+
+                    <div>
+                        <h3>Examination Results</h3>
+                        <p>Your academic performance overview</p>
+                    </div>
+
+                    {% if results %}
+                    <span class="sv-results-count">
+                        {{ results|length }}
+                        Result{{ results|length|pluralize }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if results %}
+
+                <div class="sv-results-table-wrap">
+
+                    <table class="sv-results-table">
+
+                        <thead>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Subject</th>
+                                <th>Exam</th>
+                                <th>AI Marks</th>
+                                <th>Final Marks</th>
+                                <th>Grade</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for result in results %}
+
+                            <tr>
+
+                                <!-- Sl No -->
+                                <td>
+                                    <span class="sv-results-sl">
+                                        {{ forloop.counter }}
+                                    </span>
+                                </td>
+
+
+                                <!-- Subject -->
+                                <td>
+                                    <div class="sv-results-subject">
+
+                                        <span class="sv-results-subject-icon">
+                                            <i class="fa-solid fa-book"></i>
+                                        </span>
+
+                                        <span>
+                                            {{ result.stdexam.exam.subject.subject_name }}
+                                        </span>
+
+                                    </div>
+                                </td>
+
+
+                                <!-- Exam -->
+                                <td>
+                                    <span class="sv-results-exam">
+                                        {{ result.stdexam.exam.exam_name }}
+                                    </span>
+                                </td>
+
+
+                                <!-- AI Marks -->
+                                <td>
+                                    <span class="sv-results-ai-marks">
+                                        {{ result.total_ai_marks }}
+                                    </span>
+                                </td>
+
+
+                                <!-- Final Marks -->
+                                <td>
+                                    <strong class="sv-results-final-marks">
+                                        {{ result.total_final_marks }}
+                                    </strong>
+                                </td>
+
+
+                                <!-- Grade -->
+                                <td>
+
+                                    <span class="sv-results-grade">
+                                        {{ result.grade }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- View -->
+                                <td>
+
+                                    <a class="sv-results-view"
+                                        href="{% url 'Student:SubjectResult' result.stdexam.exam.subject.subject_id %}">
+                                        View
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <!-- Empty State -->
+
+                <div class="sv-results-empty">
+
+                    <div class="sv-results-empty-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+
+                    <h4>No Results Available</h4>
+
+                    <p>
+                        Your examination results will appear here once they are published.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Back -->
+                <div class="sv-results-back">
+
+                    <a href="{% url 'Student:Studenthome' %}">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+{% endblock %}

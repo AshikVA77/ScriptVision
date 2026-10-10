@@ -1,0 +1,289 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Feedback</title>
+
+    <style>
+        /* AI Evaluation Report */
+
+        .sv-ai-report-page {
+            min-height: 75vh;
+            padding: 80px 20px;
+        }
+
+        .sv-ai-report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .sv-ai-report-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-ai-report-header h2 {
+            margin: 0 0 10px;
+            color: var(--tx);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .sv-ai-report-header p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.95rem;
+        }
+
+        .sv-ai-report-card {
+            background: var(--bg3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .sv-ai-report-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .sv-ai-report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sv-ai-report-table th,
+        .sv-ai-report-table td {
+            padding: 18px 22px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            vertical-align: top;
+        }
+
+        .sv-ai-report-table th {
+            width: 210px;
+            color: var(--tx2);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.025);
+            white-space: nowrap;
+        }
+
+        .sv-ai-report-table td {
+            color: var(--tx);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .sv-ai-report-table tr:last-child th,
+        .sv-ai-report-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sv-ai-report-score {
+            color: var(--pur2);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .sv-ai-report-final {
+            color: var(--pur3);
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .sv-ai-report-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            color: var(--pur2);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .sv-ai-report-text {
+            max-height: 220px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: var(--tx2);
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .sv-ai-report-feedback {
+            color: var(--tx2);
+            background: rgba(139, 92, 246, 0.05);
+            border-left: 3px solid var(--pur);
+            border-radius: 0 10px 10px 0;
+            padding: 14px 16px;
+            white-space: pre-wrap;
+        }
+
+        .sv-ai-report-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 28px;
+        }
+
+        .sv-ai-report-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pur), #7c3aed);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .sv-ai-report-back:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+        }
+
+        @media (max-width: 768px) {
+
+            .sv-ai-report-page {
+                padding: 50px 15px;
+            }
+
+            .sv-ai-report-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .sv-ai-report-table th {
+                width: 150px;
+            }
+
+            .sv-ai-report-table th,
+            .sv-ai-report-table td {
+                padding: 14px 15px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <center>
+        <div class="sv-ai-report-page">
+
+            <div class="sv-ai-report-container">
+
+                <div class="sv-ai-report-header">
+                    <h2>AI Evaluation Report</h2>
+                    <p>Detailed evaluation of the submitted answer</p>
+                </div>
+
+                <div class="sv-ai-report-card">
+
+                    <div class="sv-ai-report-table-wrapper">
+
+                        <table class="sv-ai-report-table">
+
+                            <tr>
+                                <th>Page Number</th>
+                                <td>{{ evaluation.page_number }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Extracted Text</th>
+                                <td>
+                                    <div class="sv-ai-report-text">
+                                        {{ evaluation.extracted_text }}
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Similarity Score</th>
+                                <td>
+                                    <span class="sv-ai-report-score">
+                                        {{ evaluation.similarity_score }}%
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>AI Score</th>
+                                <td>
+                                    <span class="sv-ai-report-score">
+                                        {{ evaluation.ai_score }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Teacher Score</th>
+                                <td>
+                                    {{ evaluation.teacher_score }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Final Mark</th>
+                                <td>
+                                    <span class="sv-ai-report-final">
+                                        {{ evaluation.final_mark }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Feedback</th>
+                                <td>
+                                    <div class="sv-ai-report-feedback">
+                                        {{ evaluation.feedback }}
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Status</th>
+                                <td>
+                                    <span class="sv-ai-report-status">
+                                        {{ evaluation.evaluation_status }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Evaluated At</th>
+                                <td>
+                                    {{ evaluation.evaluated_at }}
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="sv-ai-report-actions">
+                    <a href="{% url 'Student:ViewResult' %}" class="sv-ai-report-back">
+                        ← Back to Results
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </center>
+</body>
+
+</html>
+{% endblock %}

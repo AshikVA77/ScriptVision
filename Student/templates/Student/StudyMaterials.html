@@ -1,0 +1,544 @@
+{% extends 'Student/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Script Vision - Study Materials</title>
+
+    <style>
+        /* ================================
+   Study Materials
+================================ */
+
+        .sv-study-page {
+            min-height: 75vh;
+            padding: 80px 20px;
+        }
+
+        .sv-study-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+
+        .sv-study-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sv-study-header h2 {
+            margin: 0 0 10px;
+            color: var(--tx);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .sv-study-header p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.95rem;
+        }
+
+        /* Main Cards */
+
+        .sv-study-card {
+            background: var(--bg3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .sv-study-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            color: var(--tx);
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .sv-study-section-title i {
+            color: var(--pur2);
+            font-size: 1.1rem;
+        }
+
+        /* Labels */
+
+        .sv-study-card label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--tx2);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Select */
+
+        .sv-study-card select {
+            width: 100%;
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: var(--bg2);
+            color: var(--tx);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        .sv-study-card select:focus {
+            border-color: var(--pur);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+        }
+
+        .sv-study-card select option {
+            background: var(--bg3);
+            color: var(--tx);
+        }
+
+        /* Buttons */
+
+        .sv-study-btn {
+            border: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pur), #7c3aed);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .sv-study-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+        }
+
+        /* Selected Department */
+
+        .sv-study-selected {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+        }
+
+        .sv-study-selected-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--pur2);
+        }
+
+        .sv-study-selected div:last-child {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .sv-study-selected span {
+            color: var(--tx3);
+            font-size: 0.78rem;
+        }
+
+        .sv-study-selected strong {
+            color: var(--tx);
+            font-size: 0.95rem;
+        }
+
+        /* Messages */
+
+        .sv-study-message {
+            margin: 5px 0 0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--tx3);
+            font-size: 0.9rem;
+        }
+
+        .sv-study-error {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 13px 16px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            font-size: 0.9rem;
+        }
+
+        .sv-study-error i {
+            color: #f87171;
+        }
+
+        /* Results */
+
+        .sv-study-results {
+            margin-top: 30px;
+        }
+
+        .sv-study-results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .sv-study-results-header h3 {
+            margin: 0 0 5px;
+            color: var(--tx);
+            font-size: 1.3rem;
+        }
+
+        .sv-study-results-header p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.85rem;
+        }
+
+        .sv-study-count {
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: var(--pur2);
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Material List */
+
+        .sv-study-material-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sv-study-material {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            background: var(--bg3);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            transition: 0.25s ease;
+        }
+
+        .sv-study-material:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .sv-study-material-icon {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--pur2);
+            font-size: 1.1rem;
+        }
+
+        .sv-study-material-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sv-study-material-info h4 {
+            margin: 0 0 5px;
+            color: var(--tx);
+            font-size: 0.95rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .sv-study-material-info p {
+            margin: 0;
+            color: var(--tx3);
+            font-size: 0.8rem;
+        }
+
+        .sv-study-material-info p i {
+            margin-right: 5px;
+            color: var(--pur2);
+        }
+
+        /* Download */
+
+        .sv-study-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            border-radius: 9px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: var(--pur2);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .sv-study-download:hover {
+            color: #fff;
+            background: var(--pur);
+            border-color: var(--pur);
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .sv-study-page {
+                padding: 50px 15px;
+            }
+
+            .sv-study-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .sv-study-card {
+                padding: 22px 18px;
+            }
+
+            .sv-study-results-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .sv-study-material {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .sv-study-material-info {
+                flex: 1;
+                min-width: calc(100% - 65px);
+            }
+
+            .sv-study-download {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .sv-study-page {
+                padding: 40px 12px;
+            }
+
+            .sv-study-card {
+                padding: 20px 15px;
+            }
+
+            .sv-study-material {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sv-study-page">
+
+        <div class="sv-study-container">
+
+            <div class="sv-study-header">
+                <h2>Study Materials</h2>
+                <p>Choose a department and material to download.</p>
+            </div>
+
+            <!-- FORM 1: Select Department -->
+            <div class="sv-study-card">
+
+                <div class="sv-study-section-title">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span>Select Department</span>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <label for="department">Department</label>
+
+                    <select name="department" id="department" required>
+                        <option value="">-- Select Department --</option>
+
+                        {% for department in departments %}
+                        <option value="{{ department.dept_id }}">
+                            {{ department.dept_name }}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+
+                    <button type="submit" name="load_materials" value="1" class="sv-study-btn">
+                        Load Materials
+                    </button>
+                </form>
+
+            </div>
+
+            {% if selected_department %}
+
+            <!-- Selected Department -->
+            <div class="sv-study-selected">
+                <div class="sv-study-selected-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div>
+                    <span>Selected Department</span>
+                    <strong>{{ selected_department_name }}</strong>
+                </div>
+            </div>
+
+            <!-- FORM 2: Select Material -->
+            <div class="sv-study-card">
+
+                <div class="sv-study-section-title">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Select Material</span>
+                </div>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="department" value="{{ selected_department }}">
+
+                    <label for="material_title">Material</label>
+
+                    <select name="material_title" id="material_title" required>
+
+                        <option value="">-- Select Material --</option>
+
+                        {% for title in material_titles %}
+                        <option value="{{ title }}">
+                            {{ title }}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+
+                    {% if material_titles %}
+
+                    <button type="submit" name="find_material" value="1" class="sv-study-btn">
+                        Find Material
+                    </button>
+
+                    {% else %}
+
+                    <p class="sv-study-message">
+                        No materials available for this department.
+                    </p>
+
+                    {% endif %}
+
+                </form>
+
+            </div>
+
+            {% endif %}
+
+            <!-- Error -->
+            {% if error %}
+            <div class="sv-study-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <!-- Matching Materials -->
+            {% if materials %}
+
+            <div class="sv-study-results">
+
+                <div class="sv-study-results-header">
+                    <div>
+                        <h3>Available Materials</h3>
+                        <p>Download the required study material.</p>
+                    </div>
+
+                    <span class="sv-study-count">
+                        {{ materials|length }} Material{{ materials|length|pluralize }}
+                    </span>
+                </div>
+
+                <div class="sv-study-material-list">
+
+                    {% for material in materials %}
+
+                    <div class="sv-study-material">
+
+                        <div class="sv-study-material-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+
+                        <div class="sv-study-material-info">
+
+                            <h4>{{ material.material_title }}</h4>
+
+                            <p>
+                                <i class="fa-regular fa-calendar"></i>
+                                Uploaded:
+                                {{ material.uploaded_date|date:"d-m-Y" }}
+                            </p>
+
+                        </div>
+
+                        <a href="?download={{ material.material_id }}" class="sv-study-download">
+                            <i class="fa-solid fa-download"></i>
+                            Download
+                        </a>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+</body>
+
+</html>
+
+{% endblock %}

@@ -1,0 +1,526 @@
+{% extends 'Guest/Header.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptVision - FAQ</title>
+</head>
+
+<style>
+    /* ==========================================
+   SCRIPTVISION FAQ — NEXORA THEME
+   All styles scoped to prevent collisions
+========================================== */
+    .sv-faq-page {
+        --sv-faq-bg: #08080d;
+        --sv-faq-card: #11111a;
+        --sv-faq-card-hover: #151520;
+        --sv-faq-text: #f5f5f7;
+        --sv-faq-muted: #b7b7c5;
+        --sv-faq-border: rgba(255, 255, 255, 0.1);
+        --sv-faq-primary: #8b5cf6;
+        --sv-faq-secondary: #477dff;
+        --sv-faq-soft: rgba(139, 92, 246, 0.12);
+
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 125px 24px 80px;
+        overflow-wrap: anywhere;
+        color: var(--sv-faq-text);
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.10), transparent 48%),
+            var(--sv-faq-bg);
+        box-sizing: border-box;
+    }
+
+    .sv-faq-page *,
+    .sv-faq-page *::before,
+    .sv-faq-page *::after {
+        box-sizing: border-box;
+    }
+
+    .sv-faq-page .sv-faq-hero {
+        width: 100%;
+        max-width: 850px;
+        margin: 0 auto 55px;
+        text-align: center;
+    }
+
+    .sv-faq-page .sv-faq-badge {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 8px 16px;
+        border: 1px solid var(--sv-faq-border);
+        border-radius: 100px;
+        background: var(--sv-faq-soft);
+        color: var(--sv-faq-primary);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+    }
+
+    .sv-faq-page .sv-faq-hero h1 {
+        margin: 0 0 18px;
+        color: var(--sv-faq-text);
+        font-size: clamp(30px, 5vw, 48px);
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: -1px;
+    }
+
+    .sv-faq-page .sv-faq-hero h1 span {
+        color: var(--sv-faq-primary);
+    }
+
+    .sv-faq-page .sv-faq-hero p {
+        max-width: 620px;
+        margin: 0 auto;
+        color: var(--sv-faq-muted);
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .sv-faq-page .sv-faq-content {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .sv-faq-page .sv-faq-heading {
+        margin-bottom: 25px;
+    }
+
+    .sv-faq-page .sv-faq-heading h2 {
+        margin: 0 0 8px;
+        color: var(--sv-faq-text);
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .sv-faq-page .sv-faq-heading p {
+        margin: 0;
+        color: var(--sv-faq-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .sv-faq-page .sv-faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .sv-faq-page .sv-faq-item {
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--sv-faq-border);
+        border-radius: 14px;
+        background: var(--sv-faq-card);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        transition: border-color 0.25s ease, background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .sv-faq-page .sv-faq-item:hover {
+        border-color: rgba(139, 92, 246, 0.45);
+        background: var(--sv-faq-card-hover);
+    }
+
+    .sv-faq-page .sv-faq-item[open] {
+        border-color: rgba(139, 92, 246, 0.55);
+        box-shadow: 0 8px 26px rgba(139, 92, 246, 0.08);
+    }
+
+    .sv-faq-page .sv-faq-item summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-height: 76px;
+        padding: 19px 22px;
+        color: var(--sv-faq-text);
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .sv-faq-page .sv-faq-item summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .sv-faq-page .sv-faq-item summary::marker {
+        content: "";
+    }
+
+    .sv-faq-page .sv-faq-number {
+        display: flex;
+        flex: 0 0 40px;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--sv-faq-border);
+        border-radius: 11px;
+        background: var(--sv-faq-soft);
+        color: var(--sv-faq-primary);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .sv-faq-page .sv-faq-question {
+        flex: 1;
+        min-width: 0;
+        color: var(--sv-faq-text);
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.6;
+    }
+
+    .sv-faq-page .sv-faq-icon {
+        display: flex;
+        flex: 0 0 30px;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--sv-faq-border);
+        border-radius: 50%;
+        background: var(--sv-faq-soft);
+        color: var(--sv-faq-primary);
+        font-size: 22px;
+        font-weight: 400;
+        line-height: 1;
+        transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .sv-faq-page .sv-faq-item[open] .sv-faq-icon {
+        transform: rotate(45deg);
+    }
+
+    .sv-faq-page .sv-faq-answer {
+        padding: 0 68px 24px 78px;
+        color: var(--sv-faq-muted);
+        font-size: 14px;
+        line-height: 1.9;
+        animation: svFaqReveal 0.25s ease;
+    }
+
+    @keyframes svFaqReveal {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .sv-faq-page .sv-faq-item summary:focus-visible {
+        outline: 2px solid var(--sv-faq-primary);
+        outline-offset: -4px;
+    }
+
+    .sv-faq-page .sv-faq-contact {
+        margin-top: 38px;
+        padding: 38px 25px;
+        border: 1px solid var(--sv-faq-border);
+        border-radius: 18px;
+        background: linear-gradient(135deg,
+                rgba(139, 92, 246, 0.12),
+                rgba(71, 125, 255, 0.08));
+        text-align: center;
+    }
+
+    .sv-faq-page .sv-faq-contact h3 {
+        margin: 0 0 10px;
+        color: var(--sv-faq-text);
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+    .sv-faq-page .sv-faq-contact p {
+        margin: 0 0 22px;
+        color: var(--sv-faq-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .sv-faq-page .sv-faq-contact a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 24px;
+        border: 0;
+        border-radius: 8px;
+        background: linear-gradient(135deg,
+                var(--sv-faq-primary),
+                var(--sv-faq-secondary));
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .sv-faq-page .sv-faq-contact a:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(139, 92, 246, 0.22);
+    }
+
+    .sv-faq-page .sv-faq-contact a span {
+        font-size: 19px;
+        line-height: 1;
+    }
+
+    /* Light theme */
+    html[data-theme="light"] .sv-faq-page,
+    body[data-theme="light"] .sv-faq-page,
+    [data-bs-theme="light"] .sv-faq-page,
+    body.light-theme .sv-faq-page,
+    html.light .sv-faq-page {
+        --sv-faq-bg: #ffffff;
+        --sv-faq-card: #ffffff;
+        --sv-faq-card-hover: #f9f8ff;
+        --sv-faq-text: #101828;
+        --sv-faq-muted: #667085;
+        --sv-faq-border: #e4e7ec;
+        --sv-faq-primary: #6941c6;
+        --sv-faq-secondary: #477dff;
+        --sv-faq-soft: #f4f0ff;
+
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(105, 65, 198, 0.08), transparent 48%),
+            var(--sv-faq-bg);
+    }
+
+    @media (max-width: 600px) {
+        .sv-faq-page {
+            padding: 110px 15px 55px;
+        }
+
+        .sv-faq-page .sv-faq-hero {
+            margin-bottom: 38px;
+        }
+
+        .sv-faq-page .sv-faq-hero h1 {
+            font-size: clamp(29px, 8vw, 38px);
+            letter-spacing: -0.6px;
+        }
+
+        .sv-faq-page .sv-faq-hero p {
+            font-size: 14px;
+        }
+
+        .sv-faq-page .sv-faq-heading h2 {
+            font-size: 21px;
+        }
+
+        .sv-faq-page .sv-faq-item summary {
+            gap: 11px;
+            min-height: 66px;
+            padding: 15px 13px;
+        }
+
+        .sv-faq-page .sv-faq-number {
+            flex-basis: 32px;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            font-size: 10px;
+        }
+
+        .sv-faq-page .sv-faq-question {
+            font-size: 13px;
+        }
+
+        .sv-faq-page .sv-faq-icon {
+            flex-basis: 26px;
+            width: 26px;
+            height: 26px;
+            font-size: 20px;
+        }
+
+        .sv-faq-page .sv-faq-answer {
+            padding: 0 16px 20px 56px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .sv-faq-page .sv-faq-contact {
+            padding: 28px 18px;
+        }
+
+        .sv-faq-page .sv-faq-contact h3 {
+            font-size: 20px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .sv-faq-page *,
+        .sv-faq-page *::before,
+        .sv-faq-page *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<body>
+    <div class="sv-faq-page">
+
+        <section class="sv-faq-content">
+
+            <div class="sv-faq-heading">
+                <h2>ScriptVision FAQ</h2>
+                <p>Find quick answers to common questions.</p>
+            </div>
+
+            <div class="sv-faq-list">
+
+                <details class="sv-faq-item" open>
+                    <summary>
+                        <span class="sv-faq-number">01</span>
+                        <span class="sv-faq-question">What is ScriptVision?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        ScriptVision is an AI-based handwritten answer evaluation
+                        system that extracts handwritten answers, evaluates them,
+                        generates marks, and provides feedback.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">02</span>
+                        <span class="sv-faq-question">Who can use ScriptVision?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        The system is designed for teachers and students
+                        in educational institutions.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">03</span>
+                        <span class="sv-faq-question">How are answer sheets evaluated?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        The teacher uploads answer sheets, and the AI processes
+                        the handwriting, compares it with the model answer,
+                        and generates marks and feedback.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">04</span>
+                        <span class="sv-faq-question">Can the AI read handwritten answers?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Yes. ScriptVision uses OCR and AI models to recognize
+                        and evaluate handwritten text.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">05</span>
+                        <span class="sv-faq-question">Can teachers modify the marks?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Yes. Teachers can review AI-generated results
+                        and make changes if required.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">06</span>
+                        <span class="sv-faq-question">Can students view feedback?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Yes. Students can log in and view marks, strengths,
+                        missing points, and feedback.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">07</span>
+                        <span class="sv-faq-question">Does ScriptVision support diagrams?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Yes. The system is designed to analyze diagrams
+                        and handwritten figures along with textual answers.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">08</span>
+                        <span class="sv-faq-question">Is the uploaded data secure?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Uploaded answer sheets and evaluation reports are intended
+                        to be securely stored and accessible only to authorized users.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">09</span>
+                        <span class="sv-faq-question">Can teachers evaluate multiple answer sheets?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        Yes. Teachers can upload and evaluate multiple
+                        student answer sheets.
+                    </div>
+                </details>
+
+                <details class="sv-faq-item">
+                    <summary>
+                        <span class="sv-faq-number">10</span>
+                        <span class="sv-faq-question">Who developed ScriptVision?</span>
+                        <span class="sv-faq-icon">+</span>
+                    </summary>
+                    <div class="sv-faq-answer">
+                        ScriptVision is an academic project developed
+                        for AI-based handwritten answer evaluation.
+                    </div>
+                </details>
+
+            </div>
+
+            <div class="sv-faq-contact">
+                <h3>Still have questions?</h3>
+                <p>Contact us if you need further assistance with ScriptVision.</p>
+                <a href="{% url 'Guest:Contact' %}">Contact Us <span>→</span></a>
+            </div>
+
+        </section>
+
+    </div>
+</body>
+
+</html>
+{% endblock %}
